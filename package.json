@@ -9,8 +9,8 @@
         "build:minify": "node tools/minify.js",
         "build:images": "node tools/image-optimize.js",
         "build:pdf": "node tools/pdf.js",
-        "build": "run-s build:*",
-        "clean:maps": "rimraf public/**/*.map"
+        "clean:maps": "rimraf public/**/*.map",
+        "build": "run-s build:*"
     },
     "devDependencies": {
         "firebase-tools": "^13.0.0",
