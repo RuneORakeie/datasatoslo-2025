@@ -1,8 +1,8 @@
 {
-    "name": "site-devfest-2019",
+    "name": "site-oslo-2025",
     "version": "1.0.0",
-    "repository": "https://gitlab.com/devfest-toulouse/site-devfest-2019",
-    "author": "Igor Laborie <ilaborie@gmail.com>",
+    "repository": "https://github.com/RuneORakeie/datasatoslo-2025",
+    "author": "Rune Rakeie <rune@datasaturday.no>",
     "license": "Apache-2.0",
     "scripts": {
         "prebuild": "hugo",
