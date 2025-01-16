@@ -21,13 +21,20 @@ googleWebmasterKey = "googleXXXXXXX" # https://support.google.com/webmasters/ans
     header = "/images/logos/datasatoslo_color_text.png"
     footer = "/images/logos/datasatoslo_gray_text.png"
 
+[taxonomies]
+  tag = "tags"
+
+[sass]
+  enable = true
+  path = "themes/devfest-theme-hugo/assets/scss"
+
+[style]
+  enable = true
+
+
 [languages]
 [languages.en]
     weight = 1
     languageName = "gb"
 
-[taxonomies]
-  tag = "tags"
-
-[sass]
-    enable = true
+ 

@@ -13,8 +13,8 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
 [build]
   writeStats = true
 
-[build.buildStats]
-  enable = true
+  [build.buildStats]
+    enable = true
 
 [security]
   enableInlineShortcodes = false
@@ -28,3 +28,12 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
 [security.http]
   methods = ['(?i)GET|POST']
   urls = ['.*']
+
+[module]
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+
+  [[module.mounts]]
+    source = "themes/devfest-theme-hugo/assets"
+    target = "assets"  
