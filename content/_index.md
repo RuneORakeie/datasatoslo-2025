@@ -1,0 +1,144 @@
+---
+title: Home
+
+menu:
+  main:
+    weight: -1
+    params:
+        icon: home
+
+
+---
+{{% jumbo img="/images/backgrounds/back-0.jpg" imgLabel="Data Saturday Oslo 2025" %}}
+
+## August 29th-30th, 2025
+### Høyskolen Kristiania, Campus Fjerdingen, Oslo
+<!--
+<a class="btn primary btn-lg" style="margin-top: 1em;" href="https://drive.google.com/file/d/1td_9Cr1b2JZvv0bCpOCJNDsEWgVgEp2Y/view?usp=sharing" target="_blank">Become a sponsor</a>
+ -->
+
+<a class="btn primary btn-lg" href="https://sessionize.com/data-saturday-oslo-2025/" target="_blank">
+    <svg class="icon icon-cfp"><use xlink:href="#cfp"></use></svg>Submit a presentation
+</a>
+
+
+{{% /jumbo %}}
+
+
+
+{{% home-info what="Participants:300+,Pre-cons:1+,Sessions:36,Parallel Tracks:6" class="primary" %}}
+## What is Data Saturday Oslo?
+
+Data Saturday Oslo is a training event for professionals who use data platform capabilities either on-premises or in one or more of the 3 major public clouds Amazon Web Services, Microsoft Azure or Google Cloud Platform.  
+Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcommunity for the community. Our event will strive to offer content across data management, cloud and hybrid architecture, analytics, business intelligence, AI, and more.
+<p style="text-align:center; margin-top: 15px;">
+  <img src="/images/logos/AWS_Logo.png" height="60" alt="Amazon Web Services logo" style="margin-left: 15px; margin-right: 25px;">
+  <img src="/images/logos/azure_new_logo.png" height="60" alt="Microsoft Azure logo" style="margin-left: 25px; margin-right: 25px;">
+  <img src="/images/logos/gcp_logo_cloud.png" height="60" alt="Google Cloud Platform logo" style="margin-left: 15px; margin-right: 15px;">
+</p>
+{{% /home-info %}}
+
+
+
+
+<!-- ... 
+
+
+
+{{% home-speakers %}}
+## Featured Speakers
+
+
+{{< button-link label="Submit a presentation"
+                url="https://conference-hall.io/public/event/HJRThubF4uYPkb7jSUxi"
+                icon="cfp" >}}
+ 
+<!-- ... 
+{{< button-link label="See all speakers"
+                url="./speakers"
+                icon="right" >}}
+-->
+<!--
+{{% /home-speakers %}}
+-->
+
+<!-- ... 
+
+{{% home-subscribe  class="primary" %}}
+
+## Get notified about the important conference updates
+
+{{% /home-subscribe %}}
+-->
+<!-- ... -->
+
+<!--
+{{% home-tickets %}}
+# Tickets
+
+<a class="btn primary" href="https://www.billetweb.fr/devfest-toulouse-2019" target="_blank"><svg class="icon icon-cfp"><use xlink:href="#ticket"></use></svg>Ticketing</a>
+
+<ul>
+<li>{{< ticket name="Blind Birds"
+           starts="2019-03-25"
+           ends="2019-04-25"
+           price="40 €"
+           info="50 first places"
+           soldOut="true"
+           url="https://www.billetweb.fr/devfest-toulouse-2019" >}}</li>
+<li>{{< ticket name="Early Birds"
+           starts="2019-04-25"
+           ends="2019-06-22"
+           price="60 €"
+           info="80 first places"
+           soldOut="true"
+           url="https://www.billetweb.fr/devfest-toulouse-2019" >}}</li>
+<li>{{< ticket name="Normal"
+           starts="2019-06-22"
+           ends="2019-10-03"
+           price="80 €"
+           info="300 last places"
+           soldOut="true"
+           url="https://www.billetweb.fr/devfest-toulouse-2019" >}}</li>
+</ul>
+
+\* Your ticket gives you access to all conferences, coffee breaks, and lunch. Accommodation is NOT included in this price.
+
+{{% /home-tickets %}}
+-->
+
+<!-- ... -->
+
+{{% home-location
+    image="/images/map.jpg"
+    address="Chr. Krohgs gate 32, 0186 Oslo"
+    latitude="59.915920874246744"
+    longitude="10.759906637466653" %}}
+ 
+## The venue
+
+### Høyskolen Kristiania, Campus Fjerdingen
+
+
+{{% /home-location %}}
+
+<!-- ... 
+
+{{% album images="/images/album/2018/_25A9313.jpg,/images/album/2018/_25A9386.jpg,/images/album/2018/_25A9671.jpg,/images/album/2018/_25A9334.jpg,/images/album/2018/_25A9282.jpg,/images/album/2018/_25A9612.jpg,/images/album/2018/_25A9452.jpg,/images/album/2018/_25A9628.jpg" %}}
+
+### Some pictures of the **DevFest Toulouse 2018** with the 👾 _retro-gaming_ theme.
+-->
+<!-- ... 
+<a class="btn primary" target="_blank" rel="noopener" href="https://photos.app.goo.gl/nJYFVReFUk9mnXbv9">
+    See all photos
+    {{% icon "right" %}}
+</a>
+{{% /album  %}}
+--> 
+
+<!-- ... 
+
+{{% partners categories="platinium,gold,startup,soutien,communautes" %}}
+## Partners
+{{% /partners %}}
+--> 

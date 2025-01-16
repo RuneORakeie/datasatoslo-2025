@@ -1,0 +1,31 @@
+title = "Data Saturday Oslo 2025"
+date = "2025-08-30"
+description = "The DevFest, or 'Developers Festival', is a technical conference for developers. It is aimed at students, professionals or simply curious technophiles."
+images = ["/images/social-share.jpg"]
+email = "contactus@datasaturday.no"
+keywords = "event, datacommunity, data, gcp, microsoft, aws, fabric, databricks, sqlserver, cloud, sqlfamily"
+copyright = "Data Saturday Oslo :heart:️"
+cfpUrl = "https://sessionize.com/data-saturday-oslo-2025/"
+appleTouchIcon = "/apple-touch-icon.png"
+favicon32 = "/favicon-32x32.png"
+favicon16 = "/favicon-16x16.png"
+manifest = "/manifest.json"
+safariPinnedTab = "/safari-pinned-tab.svg"
+themeColor = "#4793e0"
+customCSS = ["/css/custom.css"]
+
+googleWebmasterKey = "googleXXXXXXX" # https://support.google.com/webmasters/answer/9008080#html_verification
+
+[logos]
+    jumbo = "/images/logos/datasatoslo_color_text.png"
+    header = "/images/logos/datasatoslo_color_text.png"
+    footer = "/images/logos/datasatoslo_gray_text.png"
+
+[languages]
+[languages.en]
+    weight = 1
+    languageName = "gb"
+
+[taxonomies]
+  tag = "tags"
+

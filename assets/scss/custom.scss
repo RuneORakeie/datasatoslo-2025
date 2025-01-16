@@ -1,0 +1,49 @@
+:root {
+    /*--jumbo-logo-width: 400px !important;*/
+    --primary: #4793e0;
+    --secondary: #324147;
+    
+    /* Additional variables the theme might use */
+    --primary-light: #6aa7e6;
+    --primary-dark: #3575b3;
+    
+    /* These affect specific UI elements */
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --link-color: var(--primary);
+    --button-background: var(--primary);
+  }
+  
+  /* Override specific theme elements if needed */
+  .btn {
+    background-color: var(--primary);
+  }
+  
+  .stroke-primary {
+    stroke: var(--primary);
+  }
+  
+  .fill-primary {
+    fill: var(--primary);
+  }
+  
+  .text-primary {
+    color: var(--primary);
+  }
+  
+  .bg-primary {
+    background-color: var(--primary);
+  }  
+
+  body>header {
+    background: var(--secondary);
+}
+.jumbo .jumbo-cover:after {
+    background-color: var(--secondary);
+}
+
+@-moz-document url-prefix() {
+    body {
+        background: #212529
+    }
+}

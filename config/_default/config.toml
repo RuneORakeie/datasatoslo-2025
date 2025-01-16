@@ -1,0 +1,30 @@
+theme = "devfest-theme-hugo"
+
+enableEmoji = true
+enableRobotsTXT = true
+enableMissingTranslationPlaceholders = true
+googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
+
+
+[markup]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[build]
+  writeStats = true
+
+[build.buildStats]
+  enable = true
+
+[security]
+  enableInlineShortcodes = false
+  [security.exec]
+    allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^postcss$']
+    osEnv = ['(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM)$']
+
+[security.funcs]
+  getenv = ['^HUGO_']
+
+[security.http]
+  methods = ['(?i)GET|POST']
+  urls = ['.*']
