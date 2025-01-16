@@ -38,7 +38,37 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
     source = "themes/devfest-theme-hugo/assets"
     target = "assets"  
 
+[taxonomies]
+  tag = "tags"
+
+[languages]
+  [languages.en]
+    weight = 1
+    languageName = "en-us"
+
 [params]
+  title = "Data Saturday Oslo 2025"
+  date = "2025-08-30"
+  description = "Data Saturday Oslo is a technical conference for current or coming data professionals. It is aimed at students, professionals or simply curious technophiles."
+  images = ["/images/social-share.jpg"]
+  email = "contactus@datasaturday.no"
+  keywords = "event, datacommunity, data, gcp, microsoft, aws, fabric, databricks, sqlserver, cloud, sqlfamily"
+  copyright = "Data Saturday Oslo :heart:️"
+  cfpUrl = "https://sessionize.com/data-saturday-oslo-2025/"
+  appleTouchIcon = "/apple-touch-icon.png"
+  favicon32 = "/favicon-32x32.png"
+  favicon16 = "/favicon-16x16.png"
+  manifest = "/manifest.json"
+  safariPinnedTab = "/safari-pinned-tab.svg"
+  themeColor = "#4793e0"
+  customCSS = ["/css/custom.css"]
+  googleWebmasterKey = "googleXXXXXXX" # https://support.google.com/webmasters/answer/9008080#html_verification
+
+  [params.logos]
+    jumbo = "/images/logos/datasatoslo_color_text.png"
+    header = "/images/logos/datasatoslo_color_text.png"
+    footer = "/images/logos/datasatoslo_gray_text.png"
+
   [params.sass]
     enable = true
     path = "themes/devfest-theme-hugo/assets/scss"

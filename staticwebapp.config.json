@@ -6,7 +6,15 @@
       "env": {
         "HUGO_VERSION": "0.139.4",
         "HUGO_ENV": "production",
-        "HUGO_EXTENDED": "true"
+        "HUGO_EXTENDED": "true",
+        "HUGO_ENABLEGITINFO": "true"
       }
-    }
+    },
+    "routes": [
+      {
+        "route": "/*",
+        "serve": "/404.html",
+        "statusCode": 404
+      }
+    ]
   }
