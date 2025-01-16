@@ -29,15 +29,6 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
   methods = ['(?i)GET|POST']
   urls = ['.*']
 
-[module]
-  [[module.mounts]]
-    source = "assets"
-    target = "assets"
-
-  [[module.mounts]]
-    source = "themes/devfest-theme-hugo/assets"
-    target = "assets"  
-
 [taxonomies]
   tag = "tags"
 
@@ -69,9 +60,3 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
     header = "/images/logos/datasatoslo_color_text.png"
     footer = "/images/logos/datasatoslo_gray_text.png"
 
-  [params.sass]
-    enable = true
-    path = "themes/devfest-theme-hugo/assets/scss"
-
-  [params.style]
-    enable = true
