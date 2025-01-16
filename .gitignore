@@ -4,6 +4,7 @@ assets/jsconfig.json
 .DS_Store
 hugo_stats.json
 yarn.lock
+package-lock.json
 
 public/
 node_modules/
