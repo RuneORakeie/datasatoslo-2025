@@ -1,5 +1,7 @@
 {{ define "main" }}
 
+{{ $lang := .Site.Language.Lang }}
+
 <div id="protectedContent" style="display: none;">
     <div class="hero">
         <h1>{{ $.Page.Params.Title }}</h1>
