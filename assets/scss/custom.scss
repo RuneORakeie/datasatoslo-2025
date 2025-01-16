@@ -47,3 +47,22 @@
         background: #212529
     }
 }
+
+// Lighter background for content pages
+.content {
+    background-color: #ffffff; // or any lighter color
+}
+
+// Primary color for TOC
+.hero {
+    background-color: var(--primary-color);
+    
+    a {
+        color: var(--primary-color);
+        
+        &:hover {
+            color: var(--primary-color);
+            opacity: 0.8;
+        }
+    }
+}

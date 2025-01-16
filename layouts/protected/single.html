@@ -29,15 +29,26 @@
 <div id="passwordPrompt" class="password-prompt">
     <h2>Enter Password</h2>
     <input type="password" id="passwordInput" />
-    <button onclick="checkPassword()">Submit</button>
+    <button onclick="verifyPassword()">Submit</button>
 </div>
 
 <script>
-const CORRECT_PASSWORD = "your-password-here"; 
+// SHA-256 hash of the password
+const HASH = '27a2ec7095dd3c011afc11d171bf7c96050bfd349c053468499d10a8095201ad'; // This is the hash of "password"
 
-function checkPassword() {
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+async function verifyPassword() {
     const input = document.getElementById('passwordInput').value;
-    if (input === CORRECT_PASSWORD) {
+    const inputHash = await sha256(input);
+    
+    if (inputHash === HASH) {
         document.getElementById('passwordPrompt').style.display = 'none';
         document.getElementById('protectedContent').style.display = 'block';
         sessionStorage.setItem('isAuthenticated', 'true');
@@ -53,6 +64,14 @@ window.onload = function() {
         document.getElementById('protectedContent').style.display = 'block';
     }
 }
+
+// Handle Enter key
+document.getElementById('passwordInput').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        verifyPassword();
+    }
+});
 </script>
 
 <style>
