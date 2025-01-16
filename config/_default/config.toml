@@ -37,3 +37,11 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
   [[module.mounts]]
     source = "themes/devfest-theme-hugo/assets"
     target = "assets"  
+
+[params]
+  [params.sass]
+    enable = true
+    path = "themes/devfest-theme-hugo/assets/scss"
+
+  [params.style]
+    enable = true

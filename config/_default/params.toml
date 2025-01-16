@@ -24,14 +24,6 @@ googleWebmasterKey = "googleXXXXXXX" # https://support.google.com/webmasters/ans
 [taxonomies]
   tag = "tags"
 
-[sass]
-  enable = true
-  path = "themes/devfest-theme-hugo/assets/scss"
-
-[style]
-  enable = true
-
-
 [languages]
 [languages.en]
     weight = 1
