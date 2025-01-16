@@ -29,3 +29,5 @@ googleWebmasterKey = "googleXXXXXXX" # https://support.google.com/webmasters/ans
 [taxonomies]
   tag = "tags"
 
+[sass]
+    enable = true
