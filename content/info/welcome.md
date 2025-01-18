@@ -2,7 +2,7 @@
 title: Speaker info
 brief: Welcome to Oslo!
 image: /images/info/speaker.png
-date: 2024-01-16
+date: 2025-01-16
 draft: false
 ---
 # Registration
