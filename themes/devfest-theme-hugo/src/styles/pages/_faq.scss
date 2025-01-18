@@ -20,8 +20,15 @@
     margin: 0 auto;
   }
 
+  #TableOfContents {
+    text-align: left;
+  }
+
   main .content {
     margin-top: 1rem;
+    a {
+      color: var(--link-color);
+    }
   }
 
   .content {
@@ -62,15 +69,6 @@
         background-color: var(--bg-mark-t2);
       }
 
-    }
-  }
-}
-
-
-@include mq($until: xl) {
-  .page.faq, .page.fr-faq {
-    .content {
-      padding: 0 .5em;
     }
   }
 }

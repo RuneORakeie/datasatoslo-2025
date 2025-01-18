@@ -4,7 +4,7 @@ menu:
   main:
     weight: 90
 
-draft: true
+draft: false
 ---
 
 All attendees, speakers, sponsors and volunteers at our conference are required to adhere with the following code of conduct.  

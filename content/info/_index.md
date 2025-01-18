@@ -1,4 +1,4 @@
 ---
-title: Speaker Info
+title: Speaker News
 draft: false
 ---

@@ -12,6 +12,14 @@
     --color-secondary: var(--secondary);
     --link-color: var(--primary);
     --button-background: var(--primary);
+
+    --color-hero: #e9f2fb;
+    --toc-text: #212529;
+    --base-text: #5b5b5b;
+
+    --toolbar-height: 3.25rem;
+    --footer-bg: var(--secondary)
+
   }
   
   /* Override specific theme elements if needed */
@@ -44,25 +52,156 @@
 
 @-moz-document url-prefix() {
     body {
-        background: #212529
+        background: #818182
     }
 }
 
-// Lighter background for content pages
-.content {
-    background-color: #ffffff; // or any lighter color
-}
+  
+  // For blog listings and content pages
+  
 
-// Primary color for TOC
-.hero {
-    background-color: var(--primary-color);
+  
+  // Additional sections that might need background color override
+  
+// Ensure main content area has proper width
+main {
+    width: 100%;
+    //margin: 0 auto;
+    background-color: #ffffff;
     
-    a {
-        color: var(--primary-color);
-        
-        &:hover {
-            color: var(--primary-color);
-            opacity: 0.8;
+
+    .hero {
+        background-color: var(--primary);
+        text-align: center;
+        color: #ffffff;
+
+        .description {
+           color: #212529;
         }
+      }
+
+    .blogs {
+        background-color: #ffffff;
+        max-width: var(--theJdrSize); 
+        margin: 0 auto;
+    //    padding: 0 24px;    
+      }
+    
+    .content {
+        max-width: var(--theJdrSize);
+        margin: 0 auto;
+        a {
+            color: var(--link-color);
+        }
+        a:hover {
+            text-decoration: underline;
+        }        
+        a:visited {
+            color: var(--link-color);
+        }        
+    }  
+}
+
+// Specifically target the protected content page
+#protectedContent::before {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+  }
+
+  iframe {
+    display: block;
+    margin: 0 auto;
+  }
+
+
+.info {
+    [id]:before {
+        display: none;
+    }}
+
+.blogs a.blog .img {
+    background-position: 50%;
+    background-size: cover;
+    display: inline-block;
+    --size: 16rem;
+    border-radius: var(--space-2);
+    flex: 0 0 var(--size, 16rem);
+    height: var(--size, 16rem);
+    overflow: hidden;
+    width: var(--size, 16rem)
+}
+
+.blogs a.blog .img>* {
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    width: 100%;
+}
+.blogs a.blog {
+    border-bottom: thin solid rgba(0, 0, 0, .125);
+    border-radius: var(--space-3);
+    color: inherit;
+    display: flex;           /* This makes it horizontal */
+    padding: var(--space-4);
+    text-decoration: none;
+}
+
+.blogs a.blog .info {
+    flex: 1 1 auto;
+    justify-content: center;
+    margin-left: var(--space-4)    /* This gives spacing between image and text */
+}
+
+#protectedContent .hero .img {
+    display: block;
+    max-height: 45vmin;
+    min-height: 45vmin;
+    overflow: hidden;
+}
+    
+#protectedContent .hero .img picture,
+#protectedContent .hero .img img {  /* Target elements specifically instead of using > */
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    width: 100%;
+}
+
+#protectedContent .hero h1 small {
+    display: block
+}
+
+.page.coc {
+
+
+    main h1, #TableOfContents, main .content {
+      max-width: var(--theJdrSize);
+      margin: 0 auto;
     }
+  
+  
+    .content {
+  
+      p {
+        margin-left: var(--space-4);
+        text-align: justify;
+  
+      }
+  
+      ul {
+        margin-left: 2rem;
+  
+        li {
+          line-height: 1.25;
+        }
+      }
+    }
+  }
+
+.location .map img {
+    width: 100%; /* Make the image span the full width of its container */
+    height: auto; /* Maintain the image's aspect ratio */
+    display: block; /* Avoid inline spacing */
+    object-fit: cover; /* Optional: Ensures the image fills its container */
 }

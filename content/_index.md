@@ -110,7 +110,7 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 <!-- ... -->
 
 {{% home-location
-    image="/images/map.jpg"
+    image="/images/map.webp"
     address="Chr. Krohgs gate 32, 0186 Oslo"
     latitude="59.915920874246744"
     longitude="10.759906637466653" %}}

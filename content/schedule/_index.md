@@ -3,21 +3,24 @@ title: Schedule
 menu:
   main:
     weight: 10
-
-horizontal: false
 draft: true
 
 ---
 
 {{% hero %}}
+<!-- 
 
-<a class="btn primary btn-lg" href="/schedule/schedule.ics">
-    <svg class="icon icon-calendar"><use xlink:href="#calendar"></use></svg> ICal
+<p style="margin: 0 auto">
+<a class="btn primary btn-lg" href="https://datasatoslo2024.sessionize.com" target="_blank">
+    <svg class="icon icon-site"><use xlink:href="#site"></use></svg> Download App
 </a>
-
-<a class="btn primary btn-lg" href="https://firebasestorage.googleapis.com/v0/b/devfesttoulouse-1f1dc.appspot.com/o/schedule-en.pdf?alt=media&token=fe0e605e-8d09-482c-9ac8-fea31197c1ab">
-    <svg class="icon icon-pdf"><use xlink:href="#pdf"></use></svg> PDF
-</a>
-
-<!-- TODO: filter and search -->
+</p>
+-->
 {{% /hero %}}
+                    
+<!-- 
+
+<p>
+    <iframe frameborder="0" STYLE="width: 90%;height:3600px" SRCDOC="<BODY><script type='text/javascript' src='https://sessionize.com/api/v2/ccukgco8/view/GridSmart'></script></BODY>"></iframe>
+</p>
+-->

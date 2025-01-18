@@ -1,39 +1,35 @@
 {{ define "main" }}
 
-{{ $lang := .Site.Language.Lang }}
-
-<div id="protectedContent" style="display: none;">
-    <div class="hero">
-        <h1>{{ $.Page.Params.Title }}</h1>
+<div id="protectedContent" style="display: none">
+    <div class="hero" >
+        {{ partial "picture" (dict "img" .Params.image "class" "img" "widths" (slice 540 720 960 1140) )}}
+        {{ if .Params.imageInfo }}
+        <div class="image-info {{ .Params.infoClass | default "light" }}">
+            {{- .Params.imageInfo }}
+        </div>
+        {{ end }}
+        
         <div class="description">
-            {{ .Content }}
+            <h1>
+                <span>{{ .Title }}</span>
+                <small>{{ .Params.brief }}</small>
+            </h1>
+            {{- if .Params.toc }}
+            <hr>
+            {{ .TableOfContents }} 
+            {{ end }}
         </div>
     </div>
-
-    <section class="blogs">
-        {{ range .Pages }}
-        <article>
-            <a class="visually-hidden" aria-hidden="true" href="{{ .Permalink }}">{{ .Title }}</a>
-            <a class="blog" href="{{ .Permalink }}">
-                {{ $img := (replace .Params.image "." "-mini.") }}
-                {{ partial "picture" (dict "img" $img "class" "img") }}
-                
-                <div class="info">
-                    <div class="date">{{ partial "date-short.html" (dict "time" .Date "lang" $lang) }}</div>
-                    <h2>{{ .Title }}</h2>
-                    <span class="brief">{{ .Params.brief }}</span>
-                    <p>{{ .Summary }} ...</p>
-                </div>
-            </a>
-        </article>
-        {{ end }}
+    
+    <section class="content">
+        {{ .Content }}
     </section>
 </div>
 
 <div id="passwordPrompt" class="password-prompt">
     <h2>Enter Password</h2>
     <input type="password" id="passwordInput" />
-    <button onclick="verifyPassword()">Submit</button>
+    <a class="btn primary btn-lg" onclick="verifyPassword()">Submit</a>
 </div>
 
 <script>

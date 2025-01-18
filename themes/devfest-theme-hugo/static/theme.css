@@ -84,11 +84,11 @@
         --lighten-1: rgba(0, 0, 0, .125);
         --lighten-2: #00000040;
         --lighten-3: #00000080;
-        --darken-1: hsla(0, 0%, 100%, .125);
+        --darken-1: rgba(255, 255, 255, 0.125);
         --darken-2: #ffffff40;
         --darken-3: #ffffff80;
-        --footer-bg: #000;
-        --footer-fg: #777
+        --footer-bg: #343434;
+        --footer-fg: #ffffff80;
     }
 }
 
@@ -178,7 +178,7 @@ body>main>section.container {
 }
 
 body>header {
-    background: var(--primary);
+    background: var(--secondary);
     box-shadow: 0 var(--space-1) var(--space-1) #00000080;
     color: var(--primary-txt);
     position: fixed;
@@ -844,7 +844,8 @@ a.social:hover {
 
 #TableOfContents ul {
     list-style: none;
-    padding-left: 1em
+    padding-left: 1em;
+    text-align: left
 }
 
 #TableOfContents ul li {
@@ -863,7 +864,7 @@ a.social:hover {
     text-decoration: underline
 }
 
-#TableOfContents>ul>li>ul>li>a {
+#TableOfContents>ul>li>a {
     font-weight: 700
 }
 
@@ -2798,11 +2799,20 @@ form input:invalid {
 .page.frfaq main h1 {
     margin: 0 auto;
     max-width: var(--theJdrSize)
+    
+}
+
+.page.faq #TableOfContents,
+.page.frfaq #TableOfContents {
+    text-align: left
 }
 
 .page.faq main .content,
 .page.frfaq main .content {
-    margin-top: 1rem
+    margin-top: 1rem;
+    a {
+      color: var(--link-color)
+    }
 }
 
 .page.faq .content h1,
@@ -2893,10 +2903,6 @@ form input:invalid {
 .page.code-of-conduct .content p {
     margin-left: var(--space-4);
     text-align: justify
-}
-
-.page.code-of-conduct .content p:first-letter {
-    margin-left: var(--space-4)
 }
 
 .page.code-of-conduct .content ul {

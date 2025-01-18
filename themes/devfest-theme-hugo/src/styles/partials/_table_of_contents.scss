@@ -1,6 +1,7 @@
 #TableOfContents ul {
   padding-left: 1em;
   list-style: none;
+  text-align: left;
 
   li {
     font-size: 1rem;
@@ -20,6 +21,6 @@
 
 }
 
-#TableOfContents > ul > li > ul > li > a {
+#TableOfContents > ul > li > a {
   font-weight: bold ;
 }

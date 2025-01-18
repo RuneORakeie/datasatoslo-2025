@@ -50,8 +50,7 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
   favicon32 = "/favicon-32x32.png"
   favicon16 = "/favicon-16x16.png"
   manifest = "/manifest.json"
-  safariPinnedTab = "/safari-pinned-tab.svg"
-  themeColor = "#4793e0"
+  safariPinnedTab = "/safari-gpinned-tab.svg"
   customCSS = ["/css/custom.css"]
   googleWebmasterKey = "googleXXXXXXX" # https://support.google.com/webmasters/answer/9008080#html_verification
 
