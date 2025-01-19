@@ -1,6 +1,6 @@
 ---
 title: Travel & Accommodations
-image: /images/info/train.png
+image: /images/info/train3.png
 date: 2025-01-16
 draft: false
 ---

@@ -163,11 +163,18 @@ main {
 #protectedContent .hero .img picture,
 #protectedContent .hero .img img {  /* Target elements specifically instead of using > */
     height: 100%;
-    object-fit: cover;
-    object-position: 50% 50%;
+    object-fit: contain;
+    object-position: center;
     width: 100%;
+    display: block; /* Remove inline spacing issues */
 }
-
+.blogs a.blog .img picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
 #protectedContent .hero h1 small {
     display: block
 }
@@ -204,4 +211,33 @@ main {
     height: auto; /* Maintain the image's aspect ratio */
     display: block; /* Avoid inline spacing */
     object-fit: cover; /* Optional: Ensures the image fills its container */
+}
+
+/*
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; // Prevent horizontal scrolling
+}
+*/
+/*
+main {
+  max-width: 100%; // Ensure the main content stays within the viewport
+  overflow-x: hidden; // Prevent content from spilling outside
+}
+*/
+@media screen and (max-width: 768px) {
+  .blogs a.blog .img {
+      --size: 8rem; /* Reduce the image size for smaller screens */
+      width: 100%; /* Ensure the image spans the container width */
+      max-width: var(--size, 8rem); /* Limit maximum size */
+      height: var(--size, 16rem);
+      margin: 0 auto; /* Center the image */
+  }
+}
+@media (max-width: 768px) {
+  #protectedContent .hero .description {
+    padding: 0rem;  
+  }
 }
