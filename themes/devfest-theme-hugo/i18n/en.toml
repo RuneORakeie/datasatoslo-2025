@@ -43,6 +43,9 @@ other = "Come join us August 30th at @datasatoslo.bsky.social, the unavoidable c
 [bluesky_share_label]
 other = "Share on Bluesky"
 
+[linkedin_share_label]
+other = "Share on LinkedIn"
+
 [footer_follow_blog]
 other = "Follow our"
 

@@ -6,7 +6,9 @@
 	<meta name="MobileOptimized" content="320">
 	<meta name="Description" content="{{ .Site.Params.description }}">
 	<meta name="google-site-verification" content="{{ .Site.Params.googleWebmasterKey }}">
-
+	<meta property="og:title" content="Data Saturday Oslo 2025 - 30th August" />
+	<meta property="og:description" content="Data Saturday Oslo is a training event for professionals who use data platform capabilities either on-premises or in one or more of the 3 major public clouds Amazon Web Services, Microsoft Azure or Google Cloud Platform." />
+  
 	{{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") }}
 	{{/* NOTE: These Hugo Internal Templates can be found starting at
 	https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}

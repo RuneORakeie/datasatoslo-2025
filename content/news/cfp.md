@@ -9,7 +9,14 @@ draft: false
 Data Saturday Oslo will take place on the August 29th & 30th. Friday 29th will be dedicated for training days and on Saturday we will have our main conference. This will be our 12th time we organize this data community conference 🎉.  
 In 2024 we had over 300 registered atteendes and hopefully we will beat that this year.
 
-We welcome submissions covering the 3 major public clouds - AWS, Azure and GCP in addition to topics for on-premises and hybrid environments.
+We welcome submissions covering the 3 major public clouds - AWS, Azure and GCP in addition to topics on On-premises and hybrid environments.
+
+<div style="text-align:center">
+<a class="btn primary btn-lg" href="https://sessionize.com/data-saturday-oslo-2025/" target="_blank">
+    <svg class="icon icon-cfp"><use xlink:href="#cfp"></use></svg>Submit a presentation
+</a>
+</div>
+<br>
 
 ## Important dates
 

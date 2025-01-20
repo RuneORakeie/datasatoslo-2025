@@ -3,7 +3,13 @@
 <a href="https://bsky.app/intent/compose?text={{ $text }}"
   class="social" rel="noopener noreferrer" target="_blank">
 	{{ partial "icon.html" .name }}
-	<span class="visually-hidden">{{ i18n "twitter_share_label" }}</span>
+	<span class="visually-hidden">{{ i18n "bluesky_share_label" }}</span>
+</a>
+{{- else if (eq .name "linkedin") -}}
+<a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdatasaturday.no%2Fnews%2F"
+  class="social" rel="noopener noreferrer" target="_blank">
+	{{ partial "icon.html" .name }}
+	<span class="visually-hidden">{{ i18n "linkedin_share_label" }}</span>
 </a>
 {{- else if (eq .name "twitter") -}}
 {{ $text := i18n "twitter_share_text" }}
