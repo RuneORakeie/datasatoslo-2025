@@ -1,75 +1,53 @@
 ---
-title: Call For Paper
-brief: The CFP is opened till May the 25th 2019
-image: /images/news/encryption.jpg
-date: 2019-03-23
-draft: true
+title: Call For Speakers
+brief: The CfS is open until 31st March 2025
+image: /images/news/cfs_logo.jpg
+date: 2025-01-16
+draft: false
 ---
 
-DevFest Toulouse will take place on October 3rd, 2019 at Pierre Baudis congress center. Our fourth edition will gather 1000 attendees!
+Data Saturday Oslo will take place on the August 29th & 30th. Friday 29th will be dedicated for training days and on Saturday we will have our main conference. This will be our 12th time we organize this data community conference 🎉.  
+In 2024 we had over 300 registered atteendes and hopefully we will beat that this year.
 
-While waiting for the D-day do not hesitate to propose a talk at [DevFest Toulouse CFP](https://conference-hall.io/public/event/HJRThubF4uYPkb7jSUxi). It is now open and this year it will be for 2 months only (from March the 25th to Mai the 25th.) 
+We welcome submissions covering the 3 major public clouds - AWS, Azure and GCP in addition to topics for on-premises and hybrid environments.
 
-Be aware that at mid terms, we will select our “early speakers”, so do not wait till the end! 
-The final selection will happen within 4 weeks after the end of the CFP. 
+## Important dates
 
-## Team
+* CfS for training days close **February 28th**
+* CfS for general sessions close **March 31st** 
 
-This year, we will add even more community members that the core team already represent (GDG Toulouse, Toulouse Data Science, Duchess France, Toulouse DevOps, PitchMeUp, JAM) with the addition of .NET, React, JUG, Rust, Python & Linux / Embedded communities.
+## Code of Conduct
 
-The complete list: <https://devfesttoulouse.fr/team/>
-
-## Categories
-
-* Big Data / ML / AI : Big Data, Machine Learning, AI
-* Cloud/infra : GCP, AWS, Azure, Kubernetes etc.
-* IoT
-* Languages : talk related to a specific language e.g: Rust, Golang, Swift etc.
-* Methods & Tools : Craftsmanship, DevOps, CD, CI, IaC (Infrastructure as Code) etc.
-* Native mobile apps : Android, iOS, React Native, Flutter etc.
-* Web : PWA, Web Components, services workers etc.
-* UX 
-* WTF and other : if your talk does not fit in any of the previous categories.
+DataSaturday Oslo strives for diversity and transparency. You can read our [CoC here](/code-of-conduct).
 
 ## Formats
 
-Two types of conferences are available:
+Two types of lengths are available:
+* The **general session**, lasting **60 minutes**
+* The **traing day**, full day of training from 0900-1700 with 1 hour lunch break
 
-- The **lightning talks**, lasting **15 minutes**, no questions asked.
-- The **conferences**, lasting **40 minutes**, no questions asked.
+## Selection process
 
-Speakers are invited to join the speaker booth after their conference, where they can interact with spectators who wish to continue the dialogue.
+We welcome any and all sessions on data as described above, and we want you as a speaker to know that we will additionally give precedence to the following in our selection process:
+* Speakers residing in the Nordic countries 
+* First-time speakers. We will offer newcomers an experienced mentor to help them prepare.
+* Diversity (i.e. diversity in gender, race and ethnicity, disability and neuro-diversity)
+* Diversity in topics and technologies 
+
+## Volunteer-run event
+
+Since this is a event where the ticket fee only covers lunch and the event is run by volunteers in their spare time we are not in a position to reimburse travel expenses for, or pay our speakers.
+
+## In-person submissions only
+
+Please note that this is an in-person event. Remote sessions will not be considered.
 
 ## Can I submit a talk with another speaker?
 
-Yes but 2 maximum (you included). On the CFP website, fill in the e-mail of the other speaker, they must have previously registered on the CFP with the same address.
+Yes, but 4 maximum (you included). On the CFS website, fill in the e-mail of the other speaker to invite co-speakers.
 
-## Perks
+## Let's submit a talk!
 
-If you are selected for a 40 minutes talk you will get:
+As explained above, the CfS will be open until March 31st 2025. Last year we got over 200 submission, so do not wait till the last minute to <a href="https://sessionize.com/data-saturday-oslo-2025//" target="_blank">submit yours</a>!
 
-* Conference ticket
-* Speaker Dinner access
-* One or two nights in an hotel close to the venue (if you ask for it in the speaker form)
-* Flight/train tickets remboursed up to 250 euros within Europe (more on a case by case basis)
-
-If you are selected for a 15 minutes talk you will get:
-
-* Conference ticket
-* Speaker Dinner access
-* One or two nights in an hotel close to the venue (on a case by case basis)
-
-For all Flight/train reservations, please contact `speakers AT devfesttoulouse.fr` with the details of your prefered journey and we will get it for you.
-
-In case your subject is not accepted, you will still be able to buy your ticket after the notification, at the normal price.
-
-## What is the expected format for slides?
-
-You can present your conference from your own computer, or provide us with the slides in PDF format in advance.
-The slides theme is entirely free, and the presentations will then be broadcast on the YouTube channel GDG France, which already hosts the presentations of previous years.
-
-## Let's propose a talk!
-
-As explained above, the CFP will be opened till May the 25th 2019. Last year we got around 350 propositions, so do not wait till the last minute to [propose yours](https://conference-hall.io/public/event/HJRThubF4uYPkb7jSUxi)!
-
-If you have any questions, you can contact us at `contact AT devfesttoulouse.fr` or via Twitter [@DevFestToulouse](https://twitter.com/DevFestToulouse).
+If you have any questions, you can contact us at `contact AT datasaturday.no` or via Bluesky [@DataSatOslo](https://bsky.app/profile/datasatoslo.bsky.social).

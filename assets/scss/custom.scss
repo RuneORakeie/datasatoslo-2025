@@ -109,13 +109,13 @@ main {
     margin: 0 !important;
   }
 
-  iframe {
+iframe {
     display: block;
     margin: 0 auto;
   }
 
 
-.info {
+.info, .news {
     [id]:before {
         display: none;
     }}
@@ -153,15 +153,15 @@ main {
     margin-left: var(--space-4)    /* This gives spacing between image and text */
 }
 
-#protectedContent .hero .img {
+.hero .img {
     display: block;
     max-height: 45vmin;
     min-height: 45vmin;
     overflow: hidden;
 }
     
-#protectedContent .hero .img picture,
-#protectedContent .hero .img img {  /* Target elements specifically instead of using > */
+.hero .img picture,
+.hero .img img {  /* Target elements specifically instead of using > */
     height: 100%;
     object-fit: contain;
     object-position: center;
@@ -175,7 +175,7 @@ main {
   object-position: center;
   display: block;
 }
-#protectedContent .hero h1 small {
+.hero h1 small {
     display: block
 }
 
@@ -205,6 +205,12 @@ main {
       }
     }
   }
+
+@media (max-width: 1600px) {
+    .page .content {
+        padding: 0 .5em
+    }
+}
 
 .location .map img {
     width: 100%; /* Make the image span the full width of its container */
@@ -237,7 +243,7 @@ main {
   }
 }
 @media (max-width: 768px) {
-  #protectedContent .hero .description {
+  .hero .description {
     padding: 0rem;  
   }
 }
