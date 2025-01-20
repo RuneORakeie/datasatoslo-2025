@@ -32,10 +32,16 @@ other = "Share"
 other = "Share on Facebook"
 
 [twitter_share_text]
-other = "Come join us at @datsatoslo the unavoidable conference for Data Professionals #DataSatOslo"
+other = "Come join us at @datasatoslo, the unavoidable conference for Data Professionals #DataSatOslo #sqlfamily"
 
 [twitter_share_label]
 other = "Share on Twitter"
+
+[bluesky_share_text]
+other = "Come join us August 30th at @datasatoslo.bsky.social, the unavoidable conference for Data Professionals #DataSatOslo #sqlfamily. For more info checkout https://datasaturday.no"
+
+[bluesky_share_label]
+other = "Share on Bluesky"
 
 [footer_follow_blog]
 other = "Follow our"
@@ -50,7 +56,7 @@ other = "Follow us"
 other = "About"
 
 [footer_previous_edition]
-other = "Previous editions"
+other = "Previous events"
 
 [footer_become_partners]
 other = "Become partner"

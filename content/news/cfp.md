@@ -1,5 +1,5 @@
 ---
-title: Call For Speakers
+title: Call for Speakers
 brief: The CfS is open until 31st March 2025
 image: /images/news/cfs_logo.jpg
 date: 2025-01-16
