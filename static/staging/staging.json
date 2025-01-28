@@ -1,0 +1,49 @@
+{
+  "platform": {
+    "apiRuntime": "node:20"
+  },
+  "build": {
+    "skip": true,
+    "env": {
+      "HUGO_VERSION": "0.139.4",
+      "HUGO_ENV": "production",
+      "HUGO_EXTENDED": "true",
+      "HUGO_ENABLEGITINFO": "true"
+    }
+  },
+  "routes": [
+    {
+      "route": "/*",
+      "serve": "/404.html",
+      "statusCode": 404
+    },
+    {
+      "route": "/login",
+      "redirect": "/.auth/login/aad",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/.auth/login/aad",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/logout",
+      "redirect": "/.auth/logout"
+    },
+    {
+      "route": "/*",
+      "allowedRoles": ["authenticated"]
+    }
+    ],
+    "platformErrorOverrides": [
+        {
+          "errorType": "NotFound",
+          "serve": "/404.html"
+        },
+        {
+          "errorType": "Unauthenticated",
+          "statusCode": "302",
+          "serve": "/login"
+        }
+      ]
+  }
