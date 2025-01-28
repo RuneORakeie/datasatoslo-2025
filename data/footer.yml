@@ -21,7 +21,7 @@ follow:
 content:
   - title: footer_about
     links:
-      - name: Data Saturdays(Global)
+      - name: Data Saturdays (Global)
         url: https://datasaturdays.com/
         newTab: true
       - name: SQL Saturday (Global)
