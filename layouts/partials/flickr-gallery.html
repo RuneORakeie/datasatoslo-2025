@@ -1,0 +1,359 @@
+{{/* layouts/partials/flickr-gallery.html */}}
+{{ $apiKey := site.Params.flickr.api_key }}
+{{ $photosPerPage := 20 }}
+
+<div class="loading-spinner"></div>
+
+<div class="gallery-wrapper">
+    <div class="flickr-gallery">
+        {{ if .Params.albums }}
+        {{ range $album := .Params.albums }}
+        {{ $albumUrl := printf
+        "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&user_id=%s&format=json&nojsoncallback=1"
+        $apiKey $album.album_id $album.user_id }}
+
+        <div class="flickr-album" data-album-id="{{ $album.album_id }}" data-user-id="{{ $album.user_id }}">
+            {{ with resources.GetRemote $albumUrl }}
+            {{ with .Err }}
+            <div class="error-info">Error loading album {{ $album.album_id }}: {{ . }}</div>
+            {{ else }}
+            {{ $jsonData := transform.Unmarshal .Content }}
+            {{ if eq $jsonData.stat "ok" }}
+            <div class="photos" data-total-photos="{{ len $jsonData.photoset.photo }}"
+                data-loaded-photos="{{ $photosPerPage }}" data-current-page="1">
+                {{ if $album.title }}
+                <h3 class="album-title">{{ $album.title }}</h3>
+                {{ end }}
+                {{ range $index, $photo := $jsonData.photoset.photo }}
+                {{ $thumbnailUrl := printf "https://live.staticflickr.com/%s/%s_%s_q.jpg" $photo.server $photo.id $photo.secret }}
+                <a href="javascript:void(0);" class="photo-container{{ if gt $index $photosPerPage }} hidden{{ end }}"
+                    data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
+                    data-photo-id="{{ $photo.id }}" 
+                    data-album-title="{{ $album.title }}" 
+                    data-user-id="{{ $album.user_id }}">
+                    <img src="{{ if le $index $photosPerPage }}{{ $thumbnailUrl }}{{ else }}data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7{{ end }}"
+                        data-src="{{ $thumbnailUrl }}"
+                        data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
+                        alt="{{ $photo.title }}" class="lazy{{ if gt $index $photosPerPage }} unloaded{{ end }}">
+                </a>
+                {{ end }}
+                <div class="scroll-sentinel"></div>
+            </div>
+            {{ else }}
+            <div class="error-info">Error loading album {{ $album.album_id }}: {{ $jsonData.message }}</div>
+            {{ end }}
+            {{ end }}
+            {{ end }}
+        </div>
+        {{ end }}
+
+        {{ else }}
+
+        {{ $albumId := "" }}
+        {{ $userId := "" }}
+        {{ $albumId = .Params.album_id }}
+        {{ $userId = .Params.user_id }}
+        {{ $albumUrl := printf
+
+        "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&user_id=%s&format=json&nojsoncallback=1" $apiKey $albumId $userId }}
+
+        <div class="flickr-album" data-album-id="{{ $albumId }}" data-user-id="{{ $userId }}">
+
+            {{ with resources.GetRemote $albumUrl }}
+            {{ with .Err }}
+            <div class="error-info">Error loading photos: {{ . }}</div>
+            {{ else }}
+            {{ $jsonData := transform.Unmarshal .Content }}
+
+            {{ if eq $jsonData.stat "ok" }}
+            <div class="photos" data-total-photos="{{ len $jsonData.photoset.photo }}"
+                data-loaded-photos="{{ $photosPerPage }}" data-current-page="1">
+                {{ range $index, $photo := $jsonData.photoset.photo }}
+                {{ $photoUrl := printf "https://live.staticflickr.com/%s/%s_%s_z.jpg" $photo.server $photo.id
+                $photo.secret }}
+                {{ $thumbnailUrl := printf "https://live.staticflickr.com/%s/%s_%s_q.jpg" $photo.server $photo.id
+                $photo.secret }}
+
+                <a href="javascript:void(0);" class="photo-container{{ if gt $index $photosPerPage }} hidden{{ end }}"
+                    data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
+                    data-photo-id="{{ $photo.id }}">
+                    <img src="{{ if le $index $photosPerPage }}{{ $thumbnailUrl }}{{ else }}data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7{{ end }}"
+                        data-src="{{ $thumbnailUrl }}"
+                        data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
+                        alt="{{ $photo.title }}" class="lazy{{ if gt $index $photosPerPage }} unloaded{{ end }}">
+                </a>
+                {{ end }}
+                <div class="scroll-sentinel"></div>
+            </div>
+            {{ else }}
+            <div class="error-info">Error: {{ $jsonData.message }}</div>
+            {{ end }}
+            {{ end }}
+            {{ end }}
+        </div>
+
+        {{ end }}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        let isLoading = false;
+
+        function showLoading() {
+            isLoading = true;
+            loadingSpinner.classList.add('visible');
+        }
+
+        function hideLoading() {
+            isLoading = false;
+            loadingSpinner.classList.remove('visible');
+        }
+        function adjustFooterPosition() {
+            const footer = document.querySelector("body > footer");
+            const mainContent = document.querySelector("main");
+            const galleryWrapper = document.querySelector(".gallery-wrapper");
+
+            if (!galleryWrapper || !footer || !mainContent) return; // Exit if not a Flickr page
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    const galleryBottom = galleryWrapper.getBoundingClientRect().bottom + window.scrollY;
+                    const footerHeight = footer.offsetHeight;
+                    const viewportHeight = window.innerHeight;
+                    const currentBodyHeight = document.documentElement.scrollHeight;
+
+                    // Ensure body height grows dynamically without excessive space
+                    const newHeight = galleryBottom + footerHeight;
+                    if (Math.abs(newHeight - currentBodyHeight) > 5) { // Avoid minor adjustments
+                        document.body.style.transition = "height 0.3s ease-out";
+                        document.body.style.height = `${Math.max(newHeight, viewportHeight)}px`;
+                    }
+
+                    // Smooth min-height expansion of main
+                    mainContent.style.transition = "min-height 0.3s ease-out";
+                    mainContent.style.minHeight = "auto"; // Reset first
+                    mainContent.style.minHeight = `${document.body.scrollHeight}px`;
+
+                    // Smooth margin transition for footer
+                    footer.style.transition = "margin-top 0.3s ease-out";
+                    footer.style.position = "relative";
+                }, 0);
+            });
+        }
+        // Initialize Intersection Observer for lazy loading images
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.classList.contains('unloaded')) {
+                        showLoading();
+                        const newImg = new Image();
+                        newImg.onload = () => {
+                            img.src = img.dataset.src;
+                            img.classList.remove('unloaded');
+                            hideLoading();
+                        };
+                        newImg.src = img.dataset.src;
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px 0px',
+            threshold: 0.1
+        });
+
+        // Initialize visible images
+        document.querySelectorAll('img.lazy:not(.unloaded)').forEach(img => {
+            imageObserver.observe(img);
+        });
+
+        // Function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+            );
+        }
+
+        // Function to load more photos
+        function loadMorePhotos(container) {
+            if (isLoading) return;
+
+            const totalPhotos = parseInt(container.dataset.totalPhotos);
+            const loadedPhotos = parseInt(container.dataset.loadedPhotos);
+            const batchSize = 20; // Load 20 photos at a time
+
+            if (loadedPhotos >= totalPhotos) return;
+
+            showLoading();
+
+            const nextBatch = Math.min(batchSize, totalPhotos - loadedPhotos);
+            const startIndex = loadedPhotos;
+            const endIndex = startIndex + nextBatch;
+
+            const hiddenPhotos = Array.from(container.querySelectorAll('.photo-container.hidden'))
+                .slice(0, nextBatch);
+
+            if (hiddenPhotos.length > 0) {
+                hiddenPhotos.forEach(photo => {
+                    photo.classList.remove('hidden');
+                    const img = photo.querySelector('img.unloaded');
+                    if (img) {
+                        imageObserver.observe(img);
+                    }
+                });
+
+                container.dataset.loadedPhotos = endIndex;
+
+                if (endIndex >= totalPhotos) {
+                    const sentinel = container.querySelector('.scroll-sentinel');
+                    if (sentinel) {
+                        sentinel.remove();
+                    }
+                }
+            }
+
+            setTimeout(() => {
+                hideLoading();
+                adjustFooterPosition(); // Reposition the footer after loading
+            }, 0);
+        }
+        // Ensure footer is adjusted when the page is loaded and resized
+        window.addEventListener("load", adjustFooterPosition);
+        window.addEventListener("resize", adjustFooterPosition);
+
+        // Initialize a MutationObserver to watch for changes in the gallery
+        const galleryObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList') {
+                    const photos = document.querySelectorAll('.photos');
+                    photos.forEach(container => {
+                        const sentinel = container.querySelector('.scroll-sentinel');
+                        if (sentinel && isInViewport(sentinel)) {
+                            loadMorePhotos(container);
+                        }
+                    });
+                }
+            });
+        });
+
+        // Start observing the gallery with the configured parameters
+        const galleryWrapper = document.querySelector('.gallery-wrapper');
+        galleryObserver.observe(galleryWrapper, {
+            childList: true,
+            subtree: true
+        });
+
+        // Detect when user is at bottom of page
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            // Check if we're at the bottom
+            if (documentHeight - (currentScroll + windowHeight) < 20) {
+                document.querySelectorAll('.photos').forEach(container => {
+                    const totalPhotos = parseInt(container.dataset.totalPhotos);
+                    const loadedPhotos = parseInt(container.dataset.loadedPhotos);
+
+                    if (loadedPhotos < totalPhotos && !isLoading) {
+                        loadMorePhotos(container);
+                    }
+                });
+            }
+
+            lastScroll = currentScroll;
+        }, { passive: true });
+
+        // Also check when page is first loaded
+        window.addEventListener('load', () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            if (documentHeight <= windowHeight) {
+                document.querySelectorAll('.photos').forEach(container => {
+                    loadMorePhotos(container);
+                });
+            }
+        });
+
+        // Handle modal view
+        const photos = Array.from(document.querySelectorAll('.photo-container'));
+        let currentIndex = -1;
+
+        function openModal(index) {
+            if (index < 0 || index >= photos.length) return;
+
+            currentIndex = index;
+            const imgElement = photos[index].querySelector('img');
+            const fullUrl = imgElement.dataset.fullSrc;
+
+            // Remove existing modal if already open
+            const existingModal = document.querySelector('.photo-modal');
+            if (existingModal) existingModal.remove();
+
+            // Create modal structure
+            const modal = document.createElement('div');
+            modal.className = 'photo-modal';
+            modal.innerHTML = `
+        <div class="modal-content">
+            <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
+            <img src="${fullUrl}" alt="">
+            <button class="modal-next" style="display: ${index === photos.length - 1 ? 'none' : 'block'};"> > </button>
+            <button class="close-modal">&times;</button>
+        </div>
+    `;
+
+            document.body.appendChild(modal);
+
+            // Attach event listeners for navigation
+            modal.querySelector('.modal-prev').addEventListener('click', () => navigateModal(-1));
+            modal.querySelector('.modal-next').addEventListener('click', () => navigateModal(1));
+            modal.querySelector('.close-modal').addEventListener('click', closeModal);
+
+            // Listen for keyboard events
+            document.addEventListener('keydown', handleKeydown);
+        }
+
+        function navigateModal(direction) {
+            const newIndex = currentIndex + direction;
+            if (newIndex < 0 || newIndex >= photos.length) return;
+
+            currentIndex = newIndex;
+            const newImgElement = photos[newIndex].querySelector('img');
+            const newFullUrl = newImgElement.dataset.fullSrc;
+
+            // Update modal image source
+            document.querySelector('.photo-modal img').src = newFullUrl;
+
+            // Show/hide arrows dynamically
+            document.querySelector('.modal-prev').style.display = newIndex === 0 ? 'none' : 'block';
+            document.querySelector('.modal-next').style.display = newIndex === photos.length - 1 ? 'none' : 'block';
+        }
+
+        function closeModal() {
+            const modal = document.querySelector('.photo-modal');
+            if (modal) modal.remove();
+
+            document.removeEventListener('keydown', handleKeydown);
+        }
+
+        function handleKeydown(event) {
+            if (event.key === 'ArrowRight') navigateModal(1);
+            if (event.key === 'ArrowLeft') navigateModal(-1);
+            if (event.key === 'Escape') closeModal();
+        }
+
+        // Attach event listeners to each photo-container
+        photos.forEach((photo, index) => {
+            photo.addEventListener('click', function (e) {
+                e.preventDefault();
+                openModal(index);
+            });
+        });
+    });
+</script>
