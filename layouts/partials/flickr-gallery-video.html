@@ -87,8 +87,6 @@
                         {{ else }}
                         {{ $thumbnailUrl = printf "https://live.staticflickr.com/%s/%s_%s_q.jpg" $photo.server $photo.id
                         $photo.secret }}
-                        {{ $fullSrc := printf "https://live.staticflickr.com/%s/%s_%s_b.jpg" $photo.server $photo.id
-                        $photo.secret }}
                         {{ end }}
                         <img src="{{ if le $index $photosPerPage }}{{ $thumbnailUrl }}{{ else }}data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7{{ end }}"
                             data-src="{{ $thumbnailUrl }}" alt="{{ $photo.title }}"
@@ -212,30 +210,22 @@
         }
 
         const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
+            entries.forEach(async entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
                     if (img.classList.contains('unloaded')) {
                         showLoading();
                         const container = img.closest('.video-container, .photo-container');
-
                         if (container && container.classList.contains('video-container')) {
-                            // Handle video thumbnails
                             const photoId = container.dataset.photoId;
                             const userId = container.dataset.userId;
-                            getVideoThumbnail(photoId, userId, flickrApiKey).then(thumbnailUrl => {
-                                if (thumbnailUrl) {
-                                    img.src = thumbnailUrl;
-                                }
-                                img.classList.remove('unloaded');
-                                hideLoading();
-                            });
-                        } else {
-                            // Handle regular photos - simple and direct
-                            img.src = img.dataset.src;
-                            img.classList.remove('unloaded');
-                            hideLoading();
+                            const thumbnailUrl = await getVideoThumbnail(photoId, userId, flickrApiKey);
+                            if (thumbnailUrl) {
+                                img.src = thumbnailUrl;
+                            }
                         }
+                        img.classList.remove('unloaded');
+                        hideLoading();
                         adjustFooterPosition();
                     }
                     observer.unobserve(img);
