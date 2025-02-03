@@ -1,5 +1,4 @@
 {{/* layouts/partials/flickr-gallery.html */}}
-{{ $apiKey := os.Getenv "HUGO_FLICKR_API_KEY" }}
 {{ $photosPerPage := 20 }}
 
 <div class="loading-spinner"></div>
@@ -8,51 +7,17 @@
     <div class="flickr-gallery">
         {{ if .Params.albums }}
         {{ range $index, $album := .Params.albums }}
-        {{ $albumUrl := printf
-        "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&user_id=%s&format=json&nojsoncallback=1"
-        $apiKey $album.album_id $album.user_id }}
 
         <div class="flickr-album{{ if and (gt $index 0) (not $album.title) }} hidden-album{{ end }}"
-            data-album-id="{{ $album.album_id }}" data-user-id="{{ $album.user_id }}" data-album-index="{{ $index }}">
-            {{ with try (resources.GetRemote $albumUrl) }}
-            {{ with .Err }}
-            <div class="error-info">Error loading album {{ $album.album_id }}: {{ . }}</div>
-            {{ else }}
-            {{ with try (transform.Unmarshal .Value.Content) }}
-            {{ with .Err }}
-            <div class="error-info">Error parsing album data for {{ $album.album_id }}: {{ . }}</div>
-            {{ else }}
-            {{ $jsonData := .Value }}
-            {{ if eq $jsonData.stat "ok" }}
-            <div class="photos" data-total-photos="{{ len $jsonData.photoset.photo }}"
-                data-loaded-photos="{{ $photosPerPage }}" data-current-page="1"
+            data-album-id="{{ $album.album_id }}" data-user-id="{{ $album.user_id }}" data-album-index="{{ $index }}"
+            data-needs-photos="true">
+            {{ if $album.title }}
+            <h3 class="album-title">{{ $album.title }}</h3>
+            {{ end }}
+            <div class="photos" data-loaded-photos="{{ $photosPerPage }}" data-current-page="1"
                 data-is-last-album="{{ eq $index (sub (len $.Params.albums) 1) }}">
-                {{ if $album.title }}
-                <h3 class="album-title">{{ $album.title }}</h3>
-                {{ end }}
-                {{ range $photoIndex, $photo := $jsonData.photoset.photo }}
-                {{ $thumbnailUrl := printf "https://live.staticflickr.com/%s/%s_%s_q.jpg" $photo.server $photo.id
-                $photo.secret }}
-                <a href="javascript:void(0);"
-                    class="photo-container{{ if gt $photoIndex $photosPerPage }} hidden{{ end }}"
-                    data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
-                    data-photo-id="{{ $photo.id }}" data-album-index="{{ $index }}"
-                    data-photo-index="{{ $photoIndex }}">
-                    <img src="{{ if le $photoIndex $photosPerPage }}{{ $thumbnailUrl }}{{ else }}data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7{{ end }}"
-                        data-src="{{ $thumbnailUrl }}"
-                        data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
-                        alt="{{ $photo.title }}" class="lazy{{ if gt $photoIndex $photosPerPage }} unloaded{{ end }}">
-                </a>
-                {{ end }}
                 <div class="scroll-sentinel"></div>
             </div>
-            {{ else }}
-            <div class="error-info">Error loading album {{ $album.album_id }}: {{ $jsonData.message }}</div>
-            {{ end }}
-            {{ end }}
-            {{ end }}
-            {{ end }}
-            {{ end }}
         </div>
         {{ end }}
 
@@ -63,79 +28,12 @@
         {{ $albumId = .Params.album_id }}
         {{ $userId = .Params.user_id }}
 
-        {{ $albumUrl := printf
-        "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=%s&photoset_id=%s&user_id=%s&media=all&extras=media,url_q,url_m&format=json&nojsoncallback=1"
-        $apiKey $albumId $userId }}
-
-        <div class="flickr-album" data-album-id="{{ $albumId }}" data-user-id="{{ $userId }}" data-album-index="0">
-            {{ with try (resources.GetRemote $albumUrl) }}
-            {{ with .Err }}
-            <div class="error-info">Error loading album: {{ . }}</div>
-            {{ else }}
-            {{ with try (transform.Unmarshal .Value.Content) }}
-            {{ with .Err }}
-            <div class="error-info">Error parsing album data: {{ . }}</div>
-            {{ else }}
-            {{ $jsonData := .Value }}
-
-            {{ if eq $jsonData.stat "ok" }}
-            <div class="photos" data-total-photos="{{ len $jsonData.photoset.photo }}"
-                data-loaded-photos="{{ $photosPerPage }}" data-current-page="1" data-is-last-album="true">
-                {{ range $index, $photo := $jsonData.photoset.photo }}
-                {{ if eq $photo.media "video" }}
-                <!-- Video container with improved thumbnail handling -->
-                <a href="javascript:void(0);"
-                    class="photo-container video-container{{ if gt $index $photosPerPage }} hidden{{ end }}"
-                    data-media-type="video" data-photo-id="{{ $photo.id }}" data-user-id="{{ $userId }}"
-                    data-video-secret="{{ $photo.secret }}" data-server="{{ $photo.server }}">
-                    <div class="video-thumbnail-wrapper">
-                        {{ $thumbnailUrl := "" }}
-                        {{ if $photo.url_q }}
-                        {{ $thumbnailUrl = $photo.url_q }}
-                        {{ else if $photo.url_m }}
-                        {{ $thumbnailUrl = $photo.url_m }}
-                        {{ else }}
-                        {{ $thumbnailUrl = printf "https://live.staticflickr.com/%s/%s_%s_q.jpg" $photo.server $photo.id
-                        $photo.secret }}
-                        {{ $fullSrc := printf "https://live.staticflickr.com/%s/%s_%s_b.jpg" $photo.server $photo.id
-                        $photo.secret }}
-                        {{ end }}
-                        <img src="{{ if le $index $photosPerPage }}{{ $thumbnailUrl }}{{ else }}data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7{{ end }}"
-                            data-src="{{ $thumbnailUrl }}" alt="{{ $photo.title }}"
-                            class="lazy{{ if gt $index $photosPerPage }} unloaded{{ end }}">
-                        <div class="play-button-overlay">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="play-icon">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-                {{ else }}
-                {{ $photoUrl := printf "https://live.staticflickr.com/%s/%s_%s_z.jpg" $photo.server $photo.id
-                $photo.secret }}
-                {{ $thumbnailUrl := printf "https://live.staticflickr.com/%s/%s_%s_q.jpg" $photo.server $photo.id
-                $photo.secret }}
-
-                <a href="javascript:void(0);" class="photo-container{{ if gt $index $photosPerPage }} hidden{{ end }}"
-                    data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
-                    data-photo-id="{{ $photo.id }}">
-                    <img src="{{ if le $index $photosPerPage }}{{ $thumbnailUrl }}{{ else }}data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7{{ end }}"
-                        data-src="{{ $thumbnailUrl }}"
-                        data-full-src="https://live.staticflickr.com/{{ $photo.server }}/{{ $photo.id }}_{{ $photo.secret }}_b.jpg"
-                        alt="{{ $photo.title }}" class="lazy{{ if gt $index $photosPerPage }} unloaded{{ end }}">
-                </a>
-                {{ end }}
-                {{ end }}
+        <div class="flickr-album" data-album-id="{{ $albumId }}" data-user-id="{{ $userId }}" data-album-index="0"
+            data-needs-photos="true">
+            <div class="photos" data-loaded-photos="{{ $photosPerPage }}" data-current-page="1"
+                data-is-last-album="true">
                 <div class="scroll-sentinel"></div>
             </div>
-            {{ else }}
-            <div class="error-info">Error: {{ $jsonData.message }}</div>
-            {{ end }}
-            {{ end }}
-            {{ end }}
-            {{ end }}
-            {{ end }}
         </div>
 
         {{ end }}
@@ -145,40 +43,13 @@
     document.addEventListener('DOMContentLoaded', async function () {
         // 1️⃣ Determine if running locally or in Azure
         const isLocal = window.location.hostname === "localhost";
-        let flickrApiKey = "";
-
-        async function fetchFlickrApiKey() {
-            const apiUrl = isLocal
-                ? "http://localhost:7071/api/GetFlickrKey"  // Local function
-                : "/api/GetFlickrKey";  // Azure function
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                if (data.apiKey) {
-                    window.flickrApiKey = data.apiKey;
-                    //Enable for debug only
-                    console.log("Fetched Flickr API Key (without stringify):", window.flickrApiKey);
-                    // Log API key for debugging
-                    console.log("✅ Flickr API Key Retrieved:", JSON.stringify(data.apiKey));
-                    // Assign the key globally
-                    window.flickrApiKey = data.apiKey.trim(); // Remove extra spaces if needed
-                } else {
-                    console.error("Failed to fetch Flickr API key:", data);
-                }
-            } catch (error) {
-                console.error("Error fetching Flickr API key:", error);
-            }
-        }
-
-        await fetchFlickrApiKey(); // Call this before any Flickr-related code runs
-
         const loadingSpinner = document.querySelector('.loading-spinner');
         let isLoading = false;
         let currentAlbumIndex = 0;
         let allPhotosLoaded = false;
-        // Initialize containers array to include both photos and videos
-        const mediaContainers = Array.from(document.querySelectorAll('.photo-container, .video-container'));
+        let mediaContainers = [];
+        let currentIndex = -1;
+
 
         function showLoading() {
             isLoading = true;
@@ -190,24 +61,6 @@
             loadingSpinner.classList.remove('visible');
         }
 
-        function loadNextAlbum() {
-            const nextAlbum = document.querySelector(`.flickr-album[data-album-index="${currentAlbumIndex + 1}"]`);
-            if (nextAlbum && nextAlbum.classList.contains('hidden-album')) {
-                nextAlbum.classList.remove('hidden-album');
-                currentAlbumIndex++;
-
-                // Initialize the newly revealed album's photos
-                const photos = nextAlbum.querySelectorAll('img.lazy:not(.unloaded)');
-                photos.forEach(img => {
-                    imageObserver.observe(img);
-                });
-
-                // Reset scroll detection for the new album
-                setupScrollDetection(nextAlbum.querySelector('.photos'));
-                return true;
-            }
-            return false;
-        }
 
         function adjustFooterPosition() {
             const footer = document.querySelector("body > footer");
@@ -228,16 +81,6 @@
                     mainContent.style.minHeight = `${newHeight - footerHeight}px`;
                 }
             });
-        }
-
-        async function getVideoThumbnail(photoId, userId) {
-            try {
-                const thumbnailUrl = `https://live.staticflickr.com/${server}/${photoId}_${secret}_q.jpg`;
-                return thumbnailUrl;
-            } catch (error) {
-                console.error('Error fetching video thumbnail:', error);
-                return null;
-            }
         }
 
         const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -275,41 +118,250 @@
             threshold: 0.1
         });
 
+        async function fetchFlickrApiKey() {
+            const apiUrl = isLocal
+                ? "http://localhost:7071/api/GetFlickrKey"  // Local function
+                : "/api/GetFlickrKey";  // Azure function
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (data.apiKey) {
+                    // Log API key for debugging
+                    console.log("✅ Flickr API Key Retrieved:", JSON.stringify(data.apiKey));
+                    return data.apiKey.trim(); // Remove extra spaces if needed
+                }
+                throw new Error('No API key in response');
+            } catch (error) {
+                console.error("Error fetching Flickr API key:", error);
+                return null;
+            }
+        }
+
+        async function fetchAlbumPhotos(albumId, userId, apiKey) {
+            console.log('🔄 Fetching album photos from Flickr API...');
+            const albumUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${albumId}&user_id=${userId}&media=all&extras=media,url_q,url_m&format=json&nojsoncallback=1`;
+            console.log('📡 API URL:', albumUrl);
+
+            try {
+                const response = await fetch(albumUrl);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching album photos:', error);
+                return null;
+            }
+        }
+
+        function createVideoContainer(photo, index, userId) {
+            const container = document.createElement('a');
+            container.href = 'javascript:void(0);';
+            container.className = `photo-container video-container${index > 20 ? ' hidden' : ''}`;
+            container.dataset.mediaType = 'video';
+            container.dataset.photoId = photo.id;
+            container.dataset.userId = userId;
+            container.dataset.videoSecret = photo.secret;
+            container.dataset.server = photo.server;
+
+            const thumbnailUrl = photo.url_q || photo.url_m ||
+                `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`;
+
+            container.innerHTML = `
+            <div class="video-thumbnail-wrapper">
+                <img src="${index <= 20 ? thumbnailUrl : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'}"
+                    data-src="${thumbnailUrl}"
+                    alt="${photo.title}"
+                    class="lazy${index > 20 ? ' unloaded' : ''}">
+                <div class="play-button-overlay">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="play-icon">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                </div>
+            </div>
+        `;
+
+            return container;
+        }
+
+        function createPhotoContainer(photo, index) {
+            const container = document.createElement('a');
+            container.href = 'javascript:void(0);';
+            container.className = `photo-container${index > 20 ? ' hidden' : ''}`;
+
+            const thumbnailUrl = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`;
+            const fullSrc = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+
+            container.dataset.fullSrc = fullSrc;
+            container.dataset.photoId = photo.id;
+
+            container.innerHTML = `
+            <img src="${index <= 20 ? thumbnailUrl : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'}"
+                data-src="${thumbnailUrl}"
+                data-full-src="${fullSrc}"
+                alt="${photo.title}"
+                class="lazy${index > 20 ? ' unloaded' : ''}">
+        `;
+
+            return container;
+        }
+
+        async function loadAlbumPhotos(album, apiKey) {
+            console.log('📂 Loading album photos...');
+            const albumId = album.dataset.albumId;
+            const userId = album.dataset.userId;
+            const photosContainer = album.querySelector('.photos');
+            console.log('Album data:', { albumId, userId });
+
+            if (!albumId || !userId || !photosContainer) return;
+
+            const data = await fetchAlbumPhotos(albumId, userId, apiKey);
+
+            if (!data || data.stat !== 'ok') {
+                album.innerHTML = `<div class="error-info">Error loading album: ${data?.message || 'Unknown error'}</div>`;
+                return;
+            }
+
+            // Update total photos count
+            photosContainer.dataset.totalPhotos = data.photoset.photo.length;
+
+            // Create and append photo elements
+            data.photoset.photo.forEach((photo, index) => {
+                if (photo.media === "video") {
+                    const videoContainer = createVideoContainer(photo, index, userId);
+                    photosContainer.insertBefore(videoContainer, photosContainer.querySelector('.scroll-sentinel'));
+                } else {
+                    const photoContainer = createPhotoContainer(photo, index);
+                    photosContainer.insertBefore(photoContainer, photosContainer.querySelector('.scroll-sentinel'));
+                }
+            });
+
+            // Initialize lazy loading for the first batch
+            initializeLazyLoading(album);
+            setupScrollDetection(photosContainer);
+
+            // Remove the loading flag
+            album.dataset.needsPhotos = "false";
+
+            // Update mediaContainers array
+            mediaContainers = Array.from(document.querySelectorAll('.photo-container, .video-container'));
+        }
+
+        function loadNextAlbum() {
+            console.log('🎬 Starting loadNextAlbum, current index:', currentAlbumIndex);
+            const nextAlbum = document.querySelector(`.flickr-album[data-album-index="${currentAlbumIndex + 1}"]`);
+            console.log('🔍 Found next album:', nextAlbum ? 'Yes' : 'No');
+
+            if (nextAlbum) {
+                console.log('📝 Next album state:', {
+                    isHidden: nextAlbum.classList.contains('hidden-album'),
+                    albumId: nextAlbum.dataset.albumId,
+                    index: nextAlbum.dataset.albumIndex
+                });
+            }
+
+            if (nextAlbum && nextAlbum.classList.contains('hidden-album')) {
+                console.log('🔓 Revealing next album');
+                nextAlbum.classList.remove('hidden-album');
+                currentAlbumIndex++;
+
+                // Set up scroll detection for the newly revealed album
+                const photoContainer = nextAlbum.querySelector('.photos');
+                if (photoContainer) {
+                    console.log('📸 Setting up photo container for next album');
+                    setupScrollDetection(photoContainer);
+
+                    // Show the first batch of photos
+                    const hiddenPhotos = Array.from(photoContainer.querySelectorAll('.photo-container.hidden'))
+                        .slice(0, 20);
+
+                    console.log('🖼️ Found hidden photos:', hiddenPhotos.length);
+
+                    hiddenPhotos.forEach(photo => {
+                        photo.classList.remove('hidden');
+                        const img = photo.querySelector('img.unloaded');
+                        if (img) {
+                            imageObserver.observe(img);
+                        }
+                    });
+
+                    // Update the loaded photos count
+                    photoContainer.dataset.loadedPhotos = hiddenPhotos.length;
+                    adjustFooterPosition();
+                }
+
+                return true;
+            }
+            console.log('❌ No next album to load');
+            return false;
+        }
+
+        function initializeLazyLoading(album) {
+            const photos = album.querySelectorAll('img.lazy:not(.unloaded)');
+            photos.forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
         function isInViewport(element) {
             const rect = element.getBoundingClientRect();
-            return (
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + 100
-            );
+            const inView = rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + 100;
+            console.log('🎯 Sentinel viewport check:', {
+                bottom: rect.bottom,
+                threshold: window.innerHeight + 100,
+                inView: inView
+            });
+            return inView;
         }
 
         function loadMorePhotos(container) {
-            if (isLoading || !container) return false;
+            if (isLoading || !container) {
+                console.log('⚠️ LoadMorePhotos blocked:', { isLoading, hasContainer: !!container });
+                return false;
+            }
 
             const totalPhotos = parseInt(container.dataset.totalPhotos);
             const loadedPhotos = parseInt(container.dataset.loadedPhotos);
             const batchSize = 20;
             const isLastAlbum = container.dataset.isLastAlbum === 'true';
 
-            if (loadedPhotos >= totalPhotos) {
+            console.log('📊 LoadMorePhotos status:', {
+                totalPhotos,
+                loadedPhotos,
+                isLastAlbum,
+                hasNextAlbumFlag: container.dataset.nextAlbumLoaded
+            });
+
+            if (loadedPhotos >= totalPhotos-1) {
+                console.log('🔄 All photos loaded in current album, checking for next album...');
                 if (!isLastAlbum && !container.dataset.nextAlbumLoaded) {
+                    console.log('➡️ Attempting to load next album...');
                     container.dataset.nextAlbumLoaded = 'true';
                     if (loadNextAlbum()) {
+                        console.log('✅ Next album loaded successfully');
                         return true;
                     }
+                    console.log('❌ Failed to load next album');
                 }
                 return false;
             }
 
             showLoading();
+            console.log('📸 Loading more photos in current album');
 
-            const nextBatch = Math.min(batchSize, totalPhotos - loadedPhotos);
-            const startIndex = loadedPhotos;
-            const endIndex = startIndex + nextBatch;
+            const remainingPhotos = totalPhotos - loadedPhotos;
+            const photosToLoad = Math.min(batchSize, remainingPhotos);
 
             const hiddenPhotos = Array.from(container.querySelectorAll('.photo-container.hidden'))
-                .slice(0, nextBatch);
+                .slice(0, photosToLoad);
+
+            console.log('🔢 Loading batch:', {
+                remainingPhotos,
+                photosToLoad,
+                hiddenPhotosFound: hiddenPhotos.length
+            });
 
             if (hiddenPhotos.length > 0) {
+                console.log('🖼️ Revealing batch of', hiddenPhotos.length, 'photos');
                 hiddenPhotos.forEach(photo => {
                     photo.classList.remove('hidden');
                     const img = photo.querySelector('img.unloaded');
@@ -318,7 +370,9 @@
                     }
                 });
 
-                container.dataset.loadedPhotos = endIndex;
+                container.dataset.loadedPhotos = parseInt(container.dataset.loadedPhotos) + hiddenPhotos.length;
+                console.log('✨ New loaded photos count:', container.dataset.loadedPhotos);
+
                 setTimeout(() => {
                     hideLoading();
                     adjustFooterPosition();
@@ -330,14 +384,26 @@
             return false;
         }
 
+
         function setupScrollDetection(container) {
-            if (!container) return;
+            if (!container) {
+                console.log('⚠️ No container provided for scroll detection');
+                return;
+            }
 
             const sentinel = container.querySelector('.scroll-sentinel');
-            if (!sentinel) return;
+            if (!sentinel) {
+                console.log('⚠️ No sentinel found in container');
+                return;
+            }
 
+            console.log('👀 Setting up scroll detection for container');
             const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    console.log('🔄 Scroll intersection:', {
+                        isIntersecting: entry.isIntersecting,
+                        ratio: entry.intersectionRatio
+                    });
                     if (entry.isIntersecting) {
                         loadMorePhotos(container);
                     }
@@ -350,87 +416,24 @@
             scrollObserver.observe(sentinel);
         }
 
-        // Initialize all albums (whether single or multiple)
-        document.querySelectorAll('.flickr-album').forEach((album) => {
-            // For single album case, ensure data-album-index exists
-            if (!album.hasAttribute('data-album-index')) {
-                album.setAttribute('data-album-index', '0');
-            }
-
-            // Only initialize visible albums
-            if (!album.classList.contains('hidden-album')) {
-                const photos = album.querySelectorAll('img.lazy:not(.unloaded)');
-                photos.forEach(img => {
-                    imageObserver.observe(img);
-                });
-
-                const photoContainer = album.querySelector('.photos');
-                if (photoContainer && !photoContainer.hasAttribute('data-is-last-album')) {
-                    photoContainer.setAttribute('data-is-last-album', 'true');
-                }
-
-                setupScrollDetection(photoContainer);
-            }
-        });
-
-        // Handle scroll events for dynamic loading
-        window.addEventListener('scroll', () => {
-            if (isLoading) return;
-
-            const currentAlbum = document.querySelector(`.flickr-album[data-album-index="${currentAlbumIndex}"]`);
-            if (!currentAlbum) return;
-
-            const container = currentAlbum.querySelector('.photos');
-            if (container) {
-                const sentinel = container.querySelector('.scroll-sentinel');
-                if (sentinel && isInViewport(sentinel)) {
-                    loadMorePhotos(container);
-                }
-            }
-        }, { passive: true });
-
-        // Check initial viewport state
-        window.addEventListener('load', () => {
-            const firstAlbum = document.querySelector('.flickr-album');
-            if (firstAlbum) {
-                const container = firstAlbum.querySelector('.photos');
-                if (container) {
-                    loadMorePhotos(container);
-                }
-            }
-            adjustFooterPosition();
-        });
-        // Function to get video URL
-        async function getVideoUrl(photoId, userId, apiKey) {
-            try {
-                const videoSource = `https://www.flickr.com/video_download.gne?id=${photoId}`;
-                return videoSource;
-            } catch (error) {
-                console.error('Error fetching video URL:', error);
-                return null;
-            }
+        // Modal functionality
+        async function getVideoUrl(photoId) {
+            return `https://www.flickr.com/video_download.gne?id=${photoId}`;
         }
-
-        // Handle modal view
-        const photos = Array.from(document.querySelectorAll('.photo-container'));
-        let currentIndex = -1;
 
         async function openModal(index) {
             if (index < 0 || index >= mediaContainers.length) return;
 
             currentIndex = index;
             const container = mediaContainers[index];
-            const mediaType = container.dataset.mediaType || 'photo'; // fallback to 'photo' if not set
+            const mediaType = container.dataset.mediaType || 'photo';
 
-            // Remove existing modal if already open
             const existingModal = document.querySelector('.photo-modal, .video-modal');
             if (existingModal) existingModal.remove();
 
             if (mediaType === 'video') {
                 showLoading();
                 const photoId = container.dataset.photoId;
-                const userId = container.dataset.userId;
-                console.log('Opening video with ID:', photoId);
                 const videoUrl = await getVideoUrl(photoId);
                 hideLoading();
 
@@ -439,9 +442,23 @@
                     return;
                 }
 
-                const modal = document.createElement('div');
-                modal.className = 'video-modal photo-modal';
-                modal.innerHTML = `
+                createVideoModal(videoUrl, index);
+            } else {
+                createPhotoModal(container, index);
+            }
+
+            // Add event listeners
+            const modal = document.querySelector('.photo-modal');
+            modal.querySelector('.modal-prev').addEventListener('click', () => navigateModal(-1));
+            modal.querySelector('.modal-next').addEventListener('click', () => navigateModal(1));
+            modal.querySelector('.close-modal').addEventListener('click', closeModal);
+            document.addEventListener('keydown', handleKeydown);
+        }
+
+        function createVideoModal(videoUrl, index) {
+            const modal = document.createElement('div');
+            modal.className = 'video-modal photo-modal';
+            modal.innerHTML = `
             <div class="modal-content">
                 <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
                 <div class="video-wrapper">
@@ -455,71 +472,51 @@
             </div>
         `;
 
-                document.body.appendChild(modal);
+            document.body.appendChild(modal);
 
-                // Add error handling for video
-                const video = modal.querySelector('video');
-                video.addEventListener('error', (e) => {
-                    console.error('Video error:', video.error);
-                    // Show error message to user
-                    const videoWrapper = modal.querySelector('.video-wrapper');
-                    videoWrapper.innerHTML = `
+            const video = modal.querySelector('video');
+            video.addEventListener('error', (e) => {
+                console.error('Video error:', video.error);
+                const videoWrapper = modal.querySelector('.video-wrapper');
+                videoWrapper.innerHTML = `
                 <div class="video-error">
                     <p>Sorry, the video could not be loaded.</p>
                     <p>Error: ${video.error?.message || 'Unknown error'}</p>
                 </div>
             `;
-                });
-            } else {
-                const imgElement = container.querySelector('img');
-                const fullUrl = imgElement.dataset.fullSrc;
-
-                const modal = document.createElement('div');
-                modal.className = 'photo-modal';
-                modal.innerHTML = `
-                <div class="modal-content">
-                    <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
-                    <img src="${fullUrl}" alt="">
-                    <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
-                    <button class="close-modal">&times;</button>
-                </div>
-            `;
-
-                document.body.appendChild(modal);
-            }
-
-            // Add event listeners
-            const modal = document.querySelector('.photo-modal');
-            modal.querySelector('.modal-prev').addEventListener('click', () => navigateModal(-1));
-            modal.querySelector('.modal-next').addEventListener('click', () => navigateModal(1));
-            modal.querySelector('.close-modal').addEventListener('click', closeModal);
-
-            // Listen for keyboard events
-            document.addEventListener('keydown', handleKeydown);
-
-
-            // Attach event listeners to each container
-            mediaContainers.forEach((container, index) => {
-                container.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    openModal(index);
-                });
             });
+        }
+
+        function createPhotoModal(container, index) {
+            const imgElement = container.querySelector('img');
+            const fullUrl = imgElement.dataset.fullSrc;
+
+            const modal = document.createElement('div');
+            modal.className = 'photo-modal';
+            modal.innerHTML = `
+            <div class="modal-content">
+                <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
+                <img src="${fullUrl}" alt="">
+                <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
+                <button class="close-modal">&times;</button>
+            </div>
+        `;
+
+            document.body.appendChild(modal);
         }
 
         async function navigateModal(direction) {
             const newIndex = currentIndex + direction;
-            if (newIndex < 0 || newIndex >= photos.length) return;
+            if (newIndex < 0 || newIndex >= mediaContainers.length) return;
 
             currentIndex = newIndex;
-            const container = photos[newIndex];
+            const container = mediaContainers[newIndex];
             const mediaType = container.dataset.mediaType;
 
             if (mediaType === 'video') {
-                // Handle video navigation
                 const photoId = container.dataset.photoId;
                 showLoading();
-                const videoUrl = await getVideoUrl(photoId, flickrApiKey);
+                const videoUrl = await getVideoUrl(photoId);
                 hideLoading();
 
                 if (!videoUrl) {
@@ -527,58 +524,53 @@
                     return;
                 }
 
-                // Replace image with video player
-                const modalContent = document.querySelector('.photo-modal .modal-content');
-                modalContent.innerHTML = `
-            <button class="modal-prev" style="display: ${newIndex === 0 ? 'none' : 'block'};"> < </button>
-            <video controls autoplay>
-                <source src="${videoUrl}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <button class="modal-next" style="display: ${newIndex === photos.length - 1 ? 'none' : 'block'};"> > </button>
+                updateModalContent(createVideoModalContent(videoUrl, newIndex));
+            } else {
+                const imgElement = container.querySelector('img');
+                const newFullUrl = imgElement.dataset.fullSrc;
+                updateModalContent(createPhotoModalContent(newFullUrl, newIndex));
+            }
+
+            // Reattach event listeners
+            const modalContent = document.querySelector('.photo-modal .modal-content');
+            modalContent.querySelector('.modal-prev').addEventListener('click', () => navigateModal(-1));
+            modalContent.querySelector('.modal-next').addEventListener('click', () => navigateModal(1));
+            modalContent.querySelector('.close-modal').addEventListener('click', closeModal);
+        }
+
+        function createVideoModalContent(videoUrl, index) {
+            return `
+            <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
+            <div class="video-wrapper">
+                <video controls autoplay playsInline>
+                    <source src="${videoUrl}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
             <button class="close-modal">&times;</button>
         `;
+        }
 
-                // Reattach event listeners
-                modalContent.querySelector('.modal-prev').addEventListener('click', () => navigateModal(-1));
-                modalContent.querySelector('.modal-next').addEventListener('click', () => navigateModal(1));
-                modalContent.querySelector('.close-modal').addEventListener('click', closeModal);
-            } else {
-                // Existing photo navigation code
-                const newImgElement = container.querySelector('img');
-                const newFullUrl = newImgElement.dataset.fullSrc;
+        function createPhotoModalContent(fullUrl, index) {
+            return `
+            <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
+            <img src="${fullUrl}" alt="">
+            <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
+            <button class="close-modal">&times;</button>
+        `;
+        }
 
-                // Update modal image source
-                const modalImg = document.querySelector('.photo-modal img');
-                if (!modalImg) {
-                    // If we're coming from a video, rebuild the photo structure
-                    const modalContent = document.querySelector('.photo-modal .modal-content');
-                    modalContent.innerHTML = `
-                <button class="modal-prev" style="display: ${newIndex === 0 ? 'none' : 'block'};"> < </button>
-                <img src="${newFullUrl}" alt="">
-                <button class="modal-next" style="display: ${newIndex === photos.length - 1 ? 'none' : 'block'};"> > </button>
-                <button class="close-modal">&times;</button>
-            `;
-
-                    // Reattach event listeners
-                    modalContent.querySelector('.modal-prev').addEventListener('click', () => navigateModal(-1));
-                    modalContent.querySelector('.modal-next').addEventListener('click', () => navigateModal(1));
-                    modalContent.querySelector('.close-modal').addEventListener('click', closeModal);
-                } else {
-                    // Update modal image source
-                    modalImg.src = newFullUrl;
-
-                    // Show/hide arrows dynamically
-                    document.querySelector('.modal-prev').style.display = newIndex === 0 ? 'none' : 'block';
-                    document.querySelector('.modal-next').style.display = newIndex === photos.length - 1 ? 'none' : 'block';
-                }
+        function updateModalContent(content) {
+            const modalContent = document.querySelector('.photo-modal .modal-content');
+            if (modalContent) {
+                modalContent.innerHTML = content;
             }
         }
 
         function closeModal() {
             const modal = document.querySelector('.photo-modal');
             if (modal) modal.remove();
-
             document.removeEventListener('keydown', handleKeydown);
         }
 
@@ -588,12 +580,93 @@
             if (event.key === 'Escape') closeModal();
         }
 
-        // Attach event listeners to each photo-container
-        photos.forEach((photo, index) => {
-            photo.addEventListener('click', function (e) {
-                e.preventDefault();
-                openModal(index);
+        // Initialize gallery
+        async function initializeGallery() {
+            console.log('🚀 Starting gallery initialization');
+            showLoading();
+            console.log('⏳ Fetching Flickr API key...');
+            const apiKey = await fetchFlickrApiKey();
+            console.log('🔑 API Key fetch result:', apiKey ? 'Success' : 'Failed');
+
+            if (!apiKey) {
+                document.querySelector('#flickrGallery').innerHTML =
+                    '<div class="error-info">Failed to initialize gallery: Could not fetch API key</div>';
+                hideLoading();
+                return;
+            }
+
+            // Store API key for later use
+            window.flickrApiKey = apiKey;
+
+            // Load all albums that need photos, regardless of visibility
+            console.log('🔍 Looking for albums to load...');
+            const albums = document.querySelectorAll('.flickr-album[data-needs-photos="true"]');
+            console.log('📁 Found albums:', albums.length);
+
+            for (const album of albums) {
+                console.log('💽 Loading album:', {
+                    id: album.dataset.albumId,
+                    userId: album.dataset.userId,
+                    hidden: album.classList.contains('hidden-album')
+                });
+                // Load the photos but keep the album hidden if it has the hidden-album class
+                const wasHidden = album.classList.contains('hidden-album');
+                if (wasHidden) {
+                    album.classList.remove('hidden-album');
+                }
+                await loadAlbumPhotos(album, apiKey);
+                if (wasHidden) {
+                    album.classList.add('hidden-album');
+                }
+            }
+
+            // Set up the scroll observer for the first visible album
+            const firstAlbum = document.querySelector('.flickr-album:not(.hidden-album)');
+            if (firstAlbum) {
+                const container = firstAlbum.querySelector('.photos');
+                setupScrollDetection(container);
+            }
+
+            // Add click handlers for all media containers
+            mediaContainers.forEach((container, index) => {
+                container.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal(index);
+                });
             });
-        });
+
+            // Handle scroll events for dynamic loading
+            window.addEventListener('scroll', () => {
+                if (isLoading) return;
+
+                const currentAlbum = document.querySelector(`.flickr-album[data-album-index="${currentAlbumIndex}"]`);
+                if (!currentAlbum) return;
+
+                const container = currentAlbum.querySelector('.photos');
+                if (container) {
+                    const sentinel = container.querySelector('.scroll-sentinel');
+                    if (sentinel && isInViewport(sentinel)) {
+                        loadMorePhotos(container);
+                    }
+                }
+            }, { passive: true });
+
+            // Check initial viewport state
+            window.addEventListener('load', () => {
+                const firstAlbum = document.querySelector('.flickr-album');
+                if (firstAlbum) {
+                    const container = firstAlbum.querySelector('.photos');
+                    if (container) {
+                        loadMorePhotos(container);
+                    }
+                }
+                adjustFooterPosition();
+            });
+
+            hideLoading();
+        }
+
+        // Start initialization
+        initializeGallery();
     });
 </script>
