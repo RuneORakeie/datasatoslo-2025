@@ -66,5 +66,3 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
     header = "/images/logos/datasatoslo_color_text.png"
     footer = "/images/logos/datasatoslo_gray_text.png"
 
-  [params.flickr]
-  api_key = "831c50c7b4a4c4afa5e0db491300428d"
