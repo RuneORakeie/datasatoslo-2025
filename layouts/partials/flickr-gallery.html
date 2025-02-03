@@ -128,7 +128,7 @@
                 const data = await response.json();
                 if (data.apiKey) {
                     // Log API key for debugging
-                    console.log("✅ Flickr API Key Retrieved:", JSON.stringify(data.apiKey));
+                    // console.log("✅ Flickr API Key Retrieved:", JSON.stringify(data.apiKey));
                     return data.apiKey.trim(); // Remove extra spaces if needed
                 }
                 throw new Error('No API key in response');
@@ -139,9 +139,9 @@
         }
 
         async function fetchAlbumPhotos(albumId, userId, apiKey) {
-            console.log('🔄 Fetching album photos from Flickr API...');
+            // console.log('🔄 Fetching album photos from Flickr API...');
             const albumUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${albumId}&user_id=${userId}&media=all&extras=media,url_q,url_m&format=json&nojsoncallback=1`;
-            console.log('📡 API URL:', albumUrl);
+            // console.log('📡 API URL:', albumUrl);
 
             try {
                 const response = await fetch(albumUrl);
@@ -206,7 +206,7 @@
         }
 
         async function loadAlbumPhotos(album, apiKey) {
-            console.log('📂 Loading album photos...');
+            // console.log('📂 Loading album photos...');
             const albumId = album.dataset.albumId;
             const userId = album.dataset.userId;
             const photosContainer = album.querySelector('.photos');
@@ -247,34 +247,35 @@
         }
 
         function loadNextAlbum() {
-            console.log('🎬 Starting loadNextAlbum, current index:', currentAlbumIndex);
+            // console.log('🎬 Starting loadNextAlbum, current index:', currentAlbumIndex);
             const nextAlbum = document.querySelector(`.flickr-album[data-album-index="${currentAlbumIndex + 1}"]`);
-            console.log('🔍 Found next album:', nextAlbum ? 'Yes' : 'No');
+            // console.log('🔍 Found next album:', nextAlbum ? 'Yes' : 'No');
 
-            if (nextAlbum) {
-                console.log('📝 Next album state:', {
+            /*if (nextAlbum) {
+                 console.log('📝 Next album state:', {
                     isHidden: nextAlbum.classList.contains('hidden-album'),
                     albumId: nextAlbum.dataset.albumId,
                     index: nextAlbum.dataset.albumIndex
                 });
-            }
+                
+            }*/
 
             if (nextAlbum && nextAlbum.classList.contains('hidden-album')) {
-                console.log('🔓 Revealing next album');
+                // console.log('🔓 Revealing next album');
                 nextAlbum.classList.remove('hidden-album');
                 currentAlbumIndex++;
 
                 // Set up scroll detection for the newly revealed album
                 const photoContainer = nextAlbum.querySelector('.photos');
                 if (photoContainer) {
-                    console.log('📸 Setting up photo container for next album');
+                    // console.log('📸 Setting up photo container for next album');
                     setupScrollDetection(photoContainer);
 
                     // Show the first batch of photos
                     const hiddenPhotos = Array.from(photoContainer.querySelectorAll('.photo-container.hidden'))
                         .slice(0, 20);
 
-                    console.log('🖼️ Found hidden photos:', hiddenPhotos.length);
+                    // console.log('🖼️ Found hidden photos:', hiddenPhotos.length);
 
                     hiddenPhotos.forEach(photo => {
                         photo.classList.remove('hidden');
@@ -291,7 +292,7 @@
 
                 return true;
             }
-            console.log('❌ No next album to load');
+            // console.log('❌ No next album to load');
             return false;
         }
 
@@ -305,17 +306,17 @@
         function isInViewport(element) {
             const rect = element.getBoundingClientRect();
             const inView = rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) + 100;
-            console.log('🎯 Sentinel viewport check:', {
+            /*console.log('🎯 Sentinel viewport check:', {
                 bottom: rect.bottom,
                 threshold: window.innerHeight + 100,
                 inView: inView
-            });
+            });*/
             return inView;
         }
 
         function loadMorePhotos(container) {
             if (isLoading || !container) {
-                console.log('⚠️ LoadMorePhotos blocked:', { isLoading, hasContainer: !!container });
+                // console.log('⚠️ LoadMorePhotos blocked:', { isLoading, hasContainer: !!container });
                 return false;
             }
 
@@ -324,44 +325,44 @@
             const batchSize = 20;
             const isLastAlbum = container.dataset.isLastAlbum === 'true';
 
-            console.log('📊 LoadMorePhotos status:', {
+/*            console.log('📊 LoadMorePhotos status:', {
                 totalPhotos,
                 loadedPhotos,
                 isLastAlbum,
                 hasNextAlbumFlag: container.dataset.nextAlbumLoaded
-            });
+            });*/
 
             if (loadedPhotos >= totalPhotos-1) {
-                console.log('🔄 All photos loaded in current album, checking for next album...');
+                // console.log('🔄 All photos loaded in current album, checking for next album...');
                 if (!isLastAlbum && !container.dataset.nextAlbumLoaded) {
-                    console.log('➡️ Attempting to load next album...');
+                    // console.log('➡️ Attempting to load next album...');
                     container.dataset.nextAlbumLoaded = 'true';
                     if (loadNextAlbum()) {
-                        console.log('✅ Next album loaded successfully');
+                        // console.log('✅ Next album loaded successfully');
                         return true;
                     }
-                    console.log('❌ Failed to load next album');
+                    // console.log('❌ Failed to load next album');
                 }
                 return false;
             }
 
             showLoading();
-            console.log('📸 Loading more photos in current album');
+            // console.log('📸 Loading more photos in current album');
 
             const remainingPhotos = totalPhotos - loadedPhotos;
             const photosToLoad = Math.min(batchSize, remainingPhotos);
 
             const hiddenPhotos = Array.from(container.querySelectorAll('.photo-container.hidden'))
                 .slice(0, photosToLoad);
-
+/*
             console.log('🔢 Loading batch:', {
                 remainingPhotos,
                 photosToLoad,
                 hiddenPhotosFound: hiddenPhotos.length
             });
-
+*/
             if (hiddenPhotos.length > 0) {
-                console.log('🖼️ Revealing batch of', hiddenPhotos.length, 'photos');
+                // console.log('🖼️ Revealing batch of', hiddenPhotos.length, 'photos');
                 hiddenPhotos.forEach(photo => {
                     photo.classList.remove('hidden');
                     const img = photo.querySelector('img.unloaded');
@@ -371,7 +372,7 @@
                 });
 
                 container.dataset.loadedPhotos = parseInt(container.dataset.loadedPhotos) + hiddenPhotos.length;
-                console.log('✨ New loaded photos count:', container.dataset.loadedPhotos);
+                // console.log('✨ New loaded photos count:', container.dataset.loadedPhotos);
 
                 setTimeout(() => {
                     hideLoading();
@@ -387,23 +388,23 @@
 
         function setupScrollDetection(container) {
             if (!container) {
-                console.log('⚠️ No container provided for scroll detection');
+                // console.log('⚠️ No container provided for scroll detection');
                 return;
             }
 
             const sentinel = container.querySelector('.scroll-sentinel');
             if (!sentinel) {
-                console.log('⚠️ No sentinel found in container');
+                // console.log('⚠️ No sentinel found in container');
                 return;
             }
 
-            console.log('👀 Setting up scroll detection for container');
+            // console.log('👀 Setting up scroll detection for container');
             const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    console.log('🔄 Scroll intersection:', {
+                    /*console.log('🔄 Scroll intersection:', {
                         isIntersecting: entry.isIntersecting,
                         ratio: entry.intersectionRatio
-                    });
+                    });*/
                     if (entry.isIntersecting) {
                         loadMorePhotos(container);
                     }
@@ -582,11 +583,11 @@
 
         // Initialize gallery
         async function initializeGallery() {
-            console.log('🚀 Starting gallery initialization');
+            // console.log('🚀 Starting gallery initialization');
             showLoading();
-            console.log('⏳ Fetching Flickr API key...');
+            // console.log('⏳ Fetching Flickr API key...');
             const apiKey = await fetchFlickrApiKey();
-            console.log('🔑 API Key fetch result:', apiKey ? 'Success' : 'Failed');
+            // console.log('🔑 API Key fetch result:', apiKey ? 'Success' : 'Failed');
 
             if (!apiKey) {
                 document.querySelector('#flickrGallery').innerHTML =
@@ -599,16 +600,16 @@
             window.flickrApiKey = apiKey;
 
             // Load all albums that need photos, regardless of visibility
-            console.log('🔍 Looking for albums to load...');
+            // console.log('🔍 Looking for albums to load...');
             const albums = document.querySelectorAll('.flickr-album[data-needs-photos="true"]');
-            console.log('📁 Found albums:', albums.length);
+            // console.log('📁 Found albums:', albums.length);
 
             for (const album of albums) {
-                console.log('💽 Loading album:', {
+                /*console.log('💽 Loading album:', {
                     id: album.dataset.albumId,
                     userId: album.dataset.userId,
                     hidden: album.classList.contains('hidden-album')
-                });
+                });*/
                 // Load the photos but keep the album hidden if it has the hidden-album class
                 const wasHidden = album.classList.contains('hidden-album');
                 if (wasHidden) {
