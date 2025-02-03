@@ -480,12 +480,12 @@
             const mediaType = container.dataset.mediaType || 'photo';
 
             // Remove any existing modal
-            const existingModal = document.querySelector('.photo-modal');
+            const existingModal = document.querySelector('.photo-modal, .video-modal');
             if (existingModal) existingModal.remove();
 
-            // Create modal with media container
+            // Create modal with appropriate classes for video/photo
             const modal = document.createElement('div');
-            modal.className = 'photo-modal';
+            modal.className = `photo-modal${mediaType === 'video' ? ' video-modal' : ''}`; // Add video-modal class for videos
             modal.innerHTML = `
         <div class="modal-content">
             <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
@@ -494,6 +494,7 @@
             <button class="close-modal">&times;</button>
         </div>
     `;
+
             document.body.appendChild(modal);
 
             // Add event listeners
@@ -568,62 +569,13 @@
                 </div>
             `;
                 });
+
             } else {
                 const imgElement = container.querySelector('img');
                 const fullUrl = imgElement.dataset.fullSrc;
                 log(LOG_LEVEL.DEBUG, 'Loading image:', fullUrl);
                 mediaContainer.innerHTML = `<img src="${fullUrl}" alt="">`;
             }
-        }
-
-        function createVideoModal(videoUrl, index) {
-            const modal = document.createElement('div');
-            modal.className = 'video-modal photo-modal';
-            modal.innerHTML = `
-            <div class="modal-content">
-                <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
-                <div class="video-wrapper">
-                    <video controls autoplay playsInline>
-                        <source src="${videoUrl}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
-                <button class="close-modal">&times;</button>
-            </div>
-        `;
-
-            document.body.appendChild(modal);
-
-            const video = modal.querySelector('video');
-            video.addEventListener('error', (e) => {
-                log(LOG_LEVEL.ERROR, 'Video error:', video.error);
-                const videoWrapper = modal.querySelector('.video-wrapper');
-                videoWrapper.innerHTML = `
-                <div class="video-error">
-                    <p>Sorry, the video could not be loaded.</p>
-                    <p>Error: ${video.error?.message || 'Unknown error'}</p>
-                </div>
-            `;
-            });
-        }
-
-        function createPhotoModal(container, index) {
-            const imgElement = container.querySelector('img');
-            const fullUrl = imgElement.dataset.fullSrc;
-
-            const modal = document.createElement('div');
-            modal.className = 'photo-modal';
-            modal.innerHTML = `
-            <div class="modal-content">
-                <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
-                <img src="${fullUrl}" alt="">
-                <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
-                <button class="close-modal">&times;</button>
-            </div>
-        `;
-
-            document.body.appendChild(modal);
         }
 
         async function navigateModal(direction) {
@@ -633,29 +585,6 @@
             currentIndex = newIndex;
             await updateModalContent(newIndex);
             preloadAdjacentImages(newIndex);
-        }
-
-        function createVideoModalContent(videoUrl, index) {
-            return `
-            <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
-            <div class="video-wrapper">
-                <video controls autoplay playsInline>
-                    <source src="${videoUrl}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
-            <button class="close-modal">&times;</button>
-        `;
-        }
-
-        function createPhotoModalContent(fullUrl, index) {
-            return `
-            <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
-            <img src="${fullUrl}" alt="">
-            <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
-            <button class="close-modal">&times;</button>
-        `;
         }
 
         function closeModal() {
