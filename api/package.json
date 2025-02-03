@@ -1,0 +1,12 @@
+{
+    "name": "azure-functions",
+    "version": "1.0.0",
+    "description": "Azure Functions for Static Web Apps",
+    "main": "index.js",
+    "scripts": {
+      "start": "func start"
+    },
+    "engines": {
+        "node": "20.x"
+      }
+  }
