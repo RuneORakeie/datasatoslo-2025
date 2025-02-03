@@ -130,7 +130,37 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
+        // 1️⃣ Determine if running locally or in Azure
+        const isLocal = window.location.hostname === "localhost";
+        let flickrApiKey = "";
+
+        async function fetchFlickrApiKey() {
+            if (isLocal) {
+                // 1️⃣ Local: Use API key directly from Hugo's environment variable (backend only)
+                flickrApiKey = "{{ $apiKey }}";
+                console.log("Using local Flickr API Key");
+            } else {
+                // Azure environment: Fetch API key from the backend function
+                const apiUrl = "/api/GetFlickrKey"; // Azure function endpoint
+
+                try {
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+                    if (data.apiKey) {
+                        window.flickrApiKey = data.apiKey;
+                        console.log("Fetched Flickr API Key from Azure:", window.flickrApiKey);
+                    } else {
+                        console.error("Failed to fetch Flickr API key:", data);
+                    }
+                } catch (error) {
+                    console.error("Error fetching Flickr API key:", error);
+                }
+            }
+        }
+
+        await fetchFlickrApiKey(); // Call this before any Flickr-related code runs
+
         const loadingSpinner = document.querySelector('.loading-spinner');
         let isLoading = false;
         let currentAlbumIndex = 0;
