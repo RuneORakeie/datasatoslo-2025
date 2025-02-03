@@ -2,11 +2,17 @@
     "name": "azure-functions",
     "version": "1.0.0",
     "description": "Azure Functions for Static Web Apps",
-    "main": "index.js",
     "scripts": {
-      "start": "func start"
+      "start": "func start",
+      "test": "echo \"No tests yet...\""
+    },
+    "dependencies": {
+      "@azure/functions": "^4.0.0"
+    },
+    "devDependencies": {
+      "azure-functions-core-tools": "^4.x"
     },
     "engines": {
-        "node": "20.x"
-      }
+      "node": ">=20.x"
+    }
   }
