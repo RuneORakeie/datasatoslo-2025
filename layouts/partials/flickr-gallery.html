@@ -325,14 +325,14 @@
             const batchSize = 20;
             const isLastAlbum = container.dataset.isLastAlbum === 'true';
 
-/*            console.log('📊 LoadMorePhotos status:', {
-                totalPhotos,
-                loadedPhotos,
-                isLastAlbum,
-                hasNextAlbumFlag: container.dataset.nextAlbumLoaded
-            });*/
+            /*            console.log('📊 LoadMorePhotos status:', {
+                            totalPhotos,
+                            loadedPhotos,
+                            isLastAlbum,
+                            hasNextAlbumFlag: container.dataset.nextAlbumLoaded
+                        });*/
 
-            if (loadedPhotos >= totalPhotos-1) {
+            if (loadedPhotos >= totalPhotos - 1) {
                 // console.log('🔄 All photos loaded in current album, checking for next album...');
                 if (!isLastAlbum && !container.dataset.nextAlbumLoaded) {
                     // console.log('➡️ Attempting to load next album...');
@@ -354,13 +354,13 @@
 
             const hiddenPhotos = Array.from(container.querySelectorAll('.photo-container.hidden'))
                 .slice(0, photosToLoad);
-/*
-            console.log('🔢 Loading batch:', {
-                remainingPhotos,
-                photosToLoad,
-                hiddenPhotosFound: hiddenPhotos.length
-            });
-*/
+            /*
+                        console.log('🔢 Loading batch:', {
+                            remainingPhotos,
+                            photosToLoad,
+                            hiddenPhotosFound: hiddenPhotos.length
+                        });
+            */
             if (hiddenPhotos.length > 0) {
                 // console.log('🖼️ Revealing batch of', hiddenPhotos.length, 'photos');
                 hiddenPhotos.forEach(photo => {
