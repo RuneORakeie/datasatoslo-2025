@@ -157,7 +157,12 @@
                 const data = await response.json();
                 if (data.apiKey) {
                     window.flickrApiKey = data.apiKey;
-                    // enable for debug only console.log("Fetched Flickr API Key:", window.flickrApiKey);
+                    //Enable for debug only
+                    console.log("Fetched Flickr API Key (without stringify):", window.flickrApiKey);
+                    // Log API key for debugging
+                    console.log("✅ Flickr API Key Retrieved:", JSON.stringify(data.apiKey));
+                    // Assign the key globally
+                    window.flickrApiKey = data.apiKey.trim(); // Remove extra spaces if needed
                 } else {
                     console.error("Failed to fetch Flickr API key:", data);
                 }
