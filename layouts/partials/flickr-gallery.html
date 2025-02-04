@@ -9,8 +9,13 @@
         {{ range $index, $album := .Params.albums }}
 
         <div class="flickr-album{{ if and (gt $index 0) (not $album.title) }} hidden-album{{ end }}"
-            data-album-id="{{ $album.album_id }}" data-user-id="{{ $album.user_id }}" data-album-index="{{ $index }}"
-            data-needs-photos="true">
+            data-album-id="{{ $album.album_id | default "" }}" 
+            data-user-id="{{ $album.user_id | default "" }}" 
+            data-album-index="{{ $index }}"
+            data-needs-photos="true"
+            {{ with $album.youtube_videos }}
+            data-youtube='{{ . | jsonify }}'
+            {{ end }}>
             {{ if $album.title }}
             <h3 class="album-title">{{ $album.title }}</h3>
             {{ end }}
@@ -48,7 +53,7 @@
         DEBUG: 4
     };
 
-    const CURRENT_LOG_LEVEL = LOG_LEVEL.ERROR;  // Change this to set logging level
+    const CURRENT_LOG_LEVEL = LOG_LEVEL.DEBUG;  // Change this to set logging level
 
     function log(level, ...args) {
         if (level <= CURRENT_LOG_LEVEL) {
@@ -75,7 +80,6 @@
         let allPhotosLoaded = false;
         let mediaContainers = [];
         let currentIndex = -1;
-
 
         function showLoading() {
             isLoading = true;
@@ -231,6 +235,32 @@
             return container;
         }
 
+        function createYoutubeContainer(video, index) {
+            console.log('createYoutubeContainer defined');
+            const container = document.createElement('a');
+            container.href = 'javascript:void(0);';
+            container.className = `youtube-container${index > 20 ? ' hidden' : ''}`;
+            container.dataset.mediaType = 'youtube';
+            container.dataset.videoId = video.id;
+            container.dataset.title = video.title;
+
+            const thumbnailUrl = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+
+            container.innerHTML = `
+                <img src="${index <= 20 ? thumbnailUrl : ''}"
+                    data-src="${thumbnailUrl}"
+                    alt="${video.title}"
+                    class="youtube-thumbnail${index > 20 ? ' unloaded' : ''}">
+                <div class="youtube-play-overlay">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="play-icon">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                </div>
+            `;
+
+            return container;
+        }
+
         async function loadAlbumPhotos(album, apiKey) {
             log(LOG_LEVEL.DEBUG, '📂 Loading album photos...');
             const albumId = album.dataset.albumId;
@@ -238,28 +268,48 @@
             const photosContainer = album.querySelector('.photos');
             log(LOG_LEVEL.INFO, 'Album data:', { albumId, userId });
 
-            if (!albumId || !userId || !photosContainer) return;
+            if (!photosContainer) return;
+            if ((!albumId || !userId) && !album.dataset.youtube) return;
 
-            const data = await fetchAlbumPhotos(albumId, userId, apiKey);
+            // Load Flickr photos if album ID exists
+            if (albumId && userId && albumId !== "" && userId !== "") {
+                const data = await fetchAlbumPhotos(albumId, userId, apiKey);
+                if (!data || data.stat !== 'ok') {
+                    album.innerHTML = `<div class="error-info">Error loading album: ${data?.message || 'Unknown error'}</div>`;
+                    return;
+                }
+                // Update total photos count
+                photosContainer.dataset.totalPhotos = data.photoset.photo.length;
 
-            if (!data || data.stat !== 'ok') {
-                album.innerHTML = `<div class="error-info">Error loading album: ${data?.message || 'Unknown error'}</div>`;
-                return;
+                // Create and append photo elements
+                data.photoset.photo.forEach((photo, index) => {
+                    if (photo.media === "video") {
+                        const videoContainer = createVideoContainer(photo, index, userId);
+                        photosContainer.insertBefore(videoContainer, photosContainer.querySelector('.scroll-sentinel'));
+                    } else {
+                        const photoContainer = createPhotoContainer(photo, index);
+                        photosContainer.insertBefore(photoContainer, photosContainer.querySelector('.scroll-sentinel'));
+                    }
+                });
             }
 
-            // Update total photos count
-            photosContainer.dataset.totalPhotos = data.photoset.photo.length;
-
-            // Create and append photo elements
-            data.photoset.photo.forEach((photo, index) => {
-                if (photo.media === "video") {
-                    const videoContainer = createVideoContainer(photo, index, userId);
-                    photosContainer.insertBefore(videoContainer, photosContainer.querySelector('.scroll-sentinel'));
-                } else {
-                    const photoContainer = createPhotoContainer(photo, index);
-                    photosContainer.insertBefore(photoContainer, photosContainer.querySelector('.scroll-sentinel'));
+            // Load YouTube videos if present
+            if (album.dataset.youtube) {
+                try {
+                    const youtubeVideos = JSON.parse(album.dataset.youtube);
+                    youtubeVideos.forEach((video, index) => {
+                        console.log('Attempting to call createYoutubeContainer');
+                        const container = createYoutubeContainer(video, index);
+                        photosContainer.insertBefore(container, photosContainer.querySelector('.scroll-sentinel'));
+                    });
+                    
+                    // Update total photos count to include YouTube videos
+                    const currentTotal = parseInt(photosContainer.dataset.totalPhotos) || 0;
+                    photosContainer.dataset.totalPhotos = currentTotal + youtubeVideos.length;
+                } catch (error) {
+                    console.error('Error parsing YouTube data:', error);
                 }
-            });
+            }
 
             // Initialize lazy loading for the first batch
             initializeLazyLoading(album);
@@ -269,7 +319,7 @@
             album.dataset.needsPhotos = "false";
 
             // Update mediaContainers array
-            mediaContainers = Array.from(document.querySelectorAll('.photo-container, .video-container'));
+            mediaContainers = Array.from(document.querySelectorAll('.photo-container, .video-container, .youtube-container'));
         }
 
         function loadNextAlbum() {
@@ -482,18 +532,19 @@
             // Remove any existing modal
             const existingModal = document.querySelector('.photo-modal, .video-modal');
             if (existingModal) existingModal.remove();
-
+            
             // Create modal with appropriate classes for video/photo
             const modal = document.createElement('div');
+
             modal.className = `photo-modal${mediaType === 'video' ? ' video-modal' : ''}`; // Add video-modal class for videos
             modal.innerHTML = `
-        <div class="modal-content">
-            <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
-            <div class="modal-media-container"></div>
-            <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
-            <button class="close-modal">&times;</button>
-        </div>
-    `;
+                <div class="modal-content">
+                    <button class="modal-prev" style="display: ${index === 0 ? 'none' : 'block'};"> < </button>
+                    <div class="modal-media-container"></div>
+                    <button class="modal-next" style="display: ${index === mediaContainers.length - 1 ? 'none' : 'block'};"> > </button>
+                    <button class="close-modal">&times;</button>
+                </div>
+            `;
 
             document.body.appendChild(modal);
 
@@ -532,7 +583,29 @@
             modal.querySelector('.modal-prev').style.display = index === 0 ? 'none' : 'block';
             modal.querySelector('.modal-next').style.display = index === mediaContainers.length - 1 ? 'none' : 'block';
 
-            if (mediaType === 'video') {
+
+            if (mediaType === 'youtube') {
+                log(LOG_LEVEL.DEBUG, 'YouTube video handling:', {
+                    videoId: container.dataset.videoId,
+                    container: container.outerHTML,
+                    modalClass: modal.className
+                });
+                modal.classList.add('youtube-modal');
+                const videoId = container.dataset.videoId;
+                mediaContainer.innerHTML = `
+                    <div class="video-wrapper">
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                `;
+            } else if (mediaType === 'video') {
+                modal.classList.remove('youtube-modal');
                 log(LOG_LEVEL.DEBUG, 'Loading video content');
                 const photoId = container.dataset.photoId;
                 const userId = container.dataset.userId;
@@ -550,27 +623,28 @@
                 }
 
                 mediaContainer.innerHTML = `
-            <div class="video-wrapper">
-                <video controls autoplay playsInline>
-                    <source src="${videoUrl}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        `;
+                    <div class="video-wrapper">
+                        <video controls autoplay playsInline>
+                            <source src="${videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                `;
 
                 // Add error handling for video
                 const video = mediaContainer.querySelector('video');
                 video.addEventListener('error', (e) => {
                     log(LOG_LEVEL.ERROR, 'Video error:', video.error);
                     mediaContainer.innerHTML = `
-                <div class="video-error">
-                    <p>Sorry, the video could not be loaded.</p>
-                    <p>Error: ${video.error?.message || 'Unknown error'}</p>
-                </div>
-            `;
+                        <div class="video-error">
+                            <p>Sorry, the video could not be loaded.</p>
+                            <p>Error: ${video.error?.message || 'Unknown error'}</p>
+                        </div>
+                    `;
                 });
 
             } else {
+                modal.classList.remove('youtube-modal');
                 const imgElement = container.querySelector('img');
                 const fullUrl = imgElement.dataset.fullSrc;
                 log(LOG_LEVEL.DEBUG, 'Loading image:', fullUrl);

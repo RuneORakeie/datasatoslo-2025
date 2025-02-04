@@ -12,13 +12,18 @@
             {{ range .Pages.ByDate.Reverse }}
             <a href="{{ .RelPermalink }}" class="album-entry">
                 <div class="img">
-                    {{ with .Params.cover_photo }}
-                    {{ $size := "b" }}
-                    {{ $server := index (split . "_") 0 }}
-                    {{ $id := index (split . "_") 1 }}
-                    {{ $secret := index (split . "_") 2 }}
-                    <img src="https://live.staticflickr.com/{{ $server }}/{{ $id }}_{{ $secret }}_{{ $size }}.jpg"
-                        alt="{{ $.Title }}" loading="lazy">
+                    {{ if .Params.cover_photo }}
+                        {{ $size := "b" }}
+                        {{ $server := index (split .Params.cover_photo "_") 0 }}
+                        {{ $id := index (split .Params.cover_photo "_") 1 }}
+                        {{ $secret := index (split .Params.cover_photo "_") 2 }}
+                        <img src="https://live.staticflickr.com/{{ $server }}/{{ $id }}_{{ $secret }}_{{ $size }}.jpg"
+                            alt="{{ .Title }}" loading="lazy">
+                    {{ else if .Params.yt_thumbnail }}
+                        <img src="https://img.youtube.com/vi/{{ .Params.yt_thumbnail }}/maxresdefault.jpg"
+                            alt="{{ .Title }}" loading="lazy">
+                    {{ else }}
+                        <div class="no-image">No preview available</div>
                     {{ end }}
                 </div>
 
@@ -87,6 +92,12 @@
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
+    }
+
+    /* Add this for YouTube thumbnails */
+    .album-entry .img img[src*="youtube"] {
+    object-fit: contain;
+    background: #000;
     }
 
     .album-entry .img .no-image {
