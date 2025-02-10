@@ -20,11 +20,12 @@
       "allowedRoles": [
         "anonymous"
       ]
-    },
+    }
+  ],
+  "platformErrorOverrides": [
     {
-      "route": "/*",
-      "serve": "/404.html",
-      "statusCode": 404
+      "errorType": "NotFound",
+      "serve": "/404.html"
     }
   ]
 }
