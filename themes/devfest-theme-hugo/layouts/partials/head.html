@@ -49,4 +49,27 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
 	{{ partial "stylesheets" . }}
 
+	{{ if hugo.IsProduction }}
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'self'; 
+		img-src 'self' https://live.staticflickr.com https://www.flickr.com https://img.youtube.com https://i.ytimg.com data:;
+		script-src 'self' 'unsafe-inline'; 
+		style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+		font-src 'self' https://fonts.gstatic.com;
+		connect-src 'self' https://api.flickr.com;
+		frame-src 'self' https://*.flickr.com https://www.flickr.com https://live.staticflickr.com https://www.youtube.com;
+		media-src 'self' https://*.flickr.com https://*.staticflickr.com;">
+	{{ else }}
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'self'; 
+		img-src 'self' https://live.staticflickr.com https://www.flickr.com https://img.youtube.com https://i.ytimg.com data:;
+		script-src 'self' 'unsafe-inline'; 
+		style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+		font-src 'self' https://fonts.gstatic.com;
+		connect-src 'self' https://api.flickr.com http://localhost:7071;
+		frame-src 'self' https://*.flickr.com https://www.flickr.com https://live.staticflickr.com https://www.youtube.com;
+		media-src 'self' https://*.flickr.com https://*.staticflickr.com;">
+	{{ end }}
+
+	<meta name="referrer" content="no-referrer">
 </head>

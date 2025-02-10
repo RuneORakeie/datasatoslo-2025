@@ -1,0 +1,30 @@
+{
+  "platform": {
+    "apiRuntime": "node:20"
+  },
+  "build": {
+    "skip": true,
+    "env": {
+      "HUGO_VERSION": "0.143.0",
+      "HUGO_ENV": "production",
+      "HUGO_EXTENDED": "true",
+      "HUGO_ENABLEGITINFO": "true"
+    }
+  },
+  "routes": [
+    {
+      "route": "/api/*",
+      "methods": [
+        "GET"
+      ],
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/*",
+      "serve": "/404.html",
+      "statusCode": 404
+    }
+  ]
+}

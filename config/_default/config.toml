@@ -18,16 +18,17 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
 
 [security]
   enableInlineShortcodes = false
+  enableRemoteDataSources = true
   [security.exec]
     allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^postcss$']
     osEnv = ['(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM)$']
 
-[security.funcs]
-  getenv = ['^HUGO_']
+  [security.funcs]
+    getenv = ['^HUGO_']
 
-[security.http]
-  methods = ['(?i)GET|POST']
-  urls = ['.*']
+  [security.http]
+    methods = ['(?i)GET|POST']
+    urls = ['.*']
 
 [taxonomies]
   tag = "tags"
@@ -36,6 +37,12 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
   [languages.en]
     weight = 1
     languageName = "en-us"
+
+[server]
+  [[server.headers]]
+    for = "/api/*"
+    [server.headers.values]
+      Access-Control-Allow-Origin = "*"
 
 [params]
   title = "Data Saturday Oslo 2025"
