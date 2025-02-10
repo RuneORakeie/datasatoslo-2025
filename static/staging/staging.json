@@ -27,7 +27,7 @@
     },
     {
       "route": "/*",
-      "allowedRoles": ["authenticated"]
+      "allowedRoles": ["reader"]
     }
     ],
     "platformErrorOverrides": [
