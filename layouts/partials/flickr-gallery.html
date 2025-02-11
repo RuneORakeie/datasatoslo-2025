@@ -168,20 +168,26 @@
             }
         }
 
-        async function fetchAlbumPhotos(albumId, userId, apiKey) {
-            log(LOG_LEVEL.DEBUG, '🔄 Fetching album photos from Flickr API...');
-            const albumUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${albumId}&user_id=${userId}&media=all&extras=media,url_q,url_m&format=json&nojsoncallback=1`;
-            log(LOG_LEVEL.DEBUG, '📡 API URL:', albumUrl);
+        async function fetchAlbumPhotos(albumId, userId) {
+    const apiUrl = isLocal
+        ? `http://localhost:7071/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`
+        : `/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`;
 
-            try {
-                const response = await fetch(albumUrl);
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                log(LOG_LEVEL.ERROR, 'Error fetching album photos:', error);
-                return null;
-            }
+    log(LOG_LEVEL.DEBUG, "📡 Fetching album photos from API:", apiUrl);
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
         }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        log(LOG_LEVEL.ERROR, "Error fetching album photos:", error);
+        return null;
+    }
+}
 
         function createVideoContainer(photo, index, userId) {
             const container = document.createElement('a');
@@ -261,7 +267,7 @@
             return container;
         }
 
-        async function loadAlbumPhotos(album, apiKey) {
+        async function loadAlbumPhotos(album) {
             log(LOG_LEVEL.DEBUG, '📂 Loading album photos...');
             const albumId = album.dataset.albumId;
             const userId = album.dataset.userId;
@@ -273,7 +279,7 @@
 
             // Load Flickr photos if album ID exists
             if (albumId && userId && albumId !== "" && userId !== "") {
-                const data = await fetchAlbumPhotos(albumId, userId, apiKey);
+                const data = await fetchAlbumPhotos(albumId, userId);
                 if (!data || data.stat !== 'ok') {
                     album.innerHTML = `<div class="error-info">Error loading album: ${data?.message || 'Unknown error'}</div>`;
                     return;
@@ -677,19 +683,6 @@
         async function initializeGallery() {
             log(LOG_LEVEL.DEBUG, '🚀 Starting gallery initialization');
             showLoading();
-            log(LOG_LEVEL.DEBUG, '⏳ Fetching Flickr API key...');
-            const apiKey = await fetchFlickrApiKey();
-            log(LOG_LEVEL.DEBUG, '🔑 API Key fetch result:', apiKey ? 'Success' : 'Failed');
-
-            if (!apiKey) {
-                document.querySelector('#flickrGallery').innerHTML =
-                    '<div class="error-info">Failed to initialize gallery: Could not fetch API key</div>';
-                hideLoading();
-                return;
-            }
-
-            // Store API key for later use
-            window.flickrApiKey = apiKey;
 
             // Load all albums that need photos, regardless of visibility
             log(LOG_LEVEL.DEBUG, '🔍 Looking for albums to load...');
@@ -707,7 +700,7 @@
                 if (wasHidden) {
                     album.classList.remove('hidden-album');
                 }
-                await loadAlbumPhotos(album, apiKey);
+                await loadAlbumPhotos(album);
                 if (wasHidden) {
                     album.classList.add('hidden-album');
                 }
