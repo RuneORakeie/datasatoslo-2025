@@ -3,8 +3,7 @@ theme = "devfest-theme-hugo"
 enableEmoji = true
 enableRobotsTXT = true
 enableMissingTranslationPlaceholders = true
-googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
-
+googleAnalytics = "G-2JJ1THLSVW" # Leave empty if you don't want to use Google Analytics
 
 [markup]
     [markup.goldmark.renderer]
