@@ -3,8 +3,6 @@ theme = "devfest-theme-hugo"
 enableEmoji = true
 enableRobotsTXT = true
 enableMissingTranslationPlaceholders = true
-googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
-
 
 [markup]
     [markup.goldmark.renderer]
@@ -60,6 +58,7 @@ googleAnalytics = "" # Leave empty if you don't want to use Google Analytics
   safariPinnedTab = "/safari-gpinned-tab.svg"
   customCSS = ["/css/custom.css"]
   googleWebmasterKey = "googleXXXXXXX" # https://support.google.com/webmasters/answer/9008080#html_verification
+  googleAnalytics = "G-2JJ1THLSVW" # Leave empty if you don't want to use Google Analytics
 
   [params.logos]
     jumbo = "/images/logos/datasatoslo_color_text.png"

@@ -9,13 +9,9 @@
         {{ range $index, $album := .Params.albums }}
 
         <div class="flickr-album{{ if and (gt $index 0) (not $album.title) }} hidden-album{{ end }}"
-            data-album-id="{{ $album.album_id | default "" }}" 
-            data-user-id="{{ $album.user_id | default "" }}" 
-            data-album-index="{{ $index }}"
-            data-needs-photos="true"
-            {{ with $album.youtube_videos }}
-            data-youtube='{{ . | jsonify }}'
-            {{ end }}>
+            data-album-id="{{ $album.album_id | default "" }}" data-user-id="{{ $album.user_id | default "" }}"
+            data-album-index="{{ $index }}" data-needs-photos="true" {{ with $album.youtube_videos }}
+            data-youtube='{{ . | jsonify }}' {{ end }}>
             {{ if $album.title }}
             <h3 class="album-title">{{ $album.title }}</h3>
             {{ end }}
@@ -168,17 +164,23 @@
             }
         }
 
-        async function fetchAlbumPhotos(albumId, userId, apiKey) {
-            log(LOG_LEVEL.DEBUG, '🔄 Fetching album photos from Flickr API...');
-            const albumUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${apiKey}&photoset_id=${albumId}&user_id=${userId}&media=all&extras=media,url_q,url_m&format=json&nojsoncallback=1`;
-            log(LOG_LEVEL.DEBUG, '📡 API URL:', albumUrl);
+        async function fetchAlbumPhotos(albumId, userId) {
+            const apiUrl = isLocal
+                ? `http://localhost:7071/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`
+                : `/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`;
+
+            log(LOG_LEVEL.DEBUG, "📡 Fetching album photos from API:", apiUrl);
 
             try {
-                const response = await fetch(albumUrl);
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
                 const data = await response.json();
                 return data;
             } catch (error) {
-                log(LOG_LEVEL.ERROR, 'Error fetching album photos:', error);
+                log(LOG_LEVEL.ERROR, "Error fetching album photos:", error);
                 return null;
             }
         }
@@ -261,7 +263,7 @@
             return container;
         }
 
-        async function loadAlbumPhotos(album, apiKey) {
+        async function loadAlbumPhotos(album) {
             log(LOG_LEVEL.DEBUG, '📂 Loading album photos...');
             const albumId = album.dataset.albumId;
             const userId = album.dataset.userId;
@@ -273,7 +275,7 @@
 
             // Load Flickr photos if album ID exists
             if (albumId && userId && albumId !== "" && userId !== "") {
-                const data = await fetchAlbumPhotos(albumId, userId, apiKey);
+                const data = await fetchAlbumPhotos(albumId, userId);
                 if (!data || data.stat !== 'ok') {
                     album.innerHTML = `<div class="error-info">Error loading album: ${data?.message || 'Unknown error'}</div>`;
                     return;
@@ -302,7 +304,7 @@
                         const container = createYoutubeContainer(video, index);
                         photosContainer.insertBefore(container, photosContainer.querySelector('.scroll-sentinel'));
                     });
-                    
+
                     // Update total photos count to include YouTube videos
                     const currentTotal = parseInt(photosContainer.dataset.totalPhotos) || 0;
                     photosContainer.dataset.totalPhotos = currentTotal + youtubeVideos.length;
@@ -532,7 +534,7 @@
             // Remove any existing modal
             const existingModal = document.querySelector('.photo-modal, .video-modal');
             if (existingModal) existingModal.remove();
-            
+
             // Create modal with appropriate classes for video/photo
             const modal = document.createElement('div');
 
@@ -677,19 +679,6 @@
         async function initializeGallery() {
             log(LOG_LEVEL.DEBUG, '🚀 Starting gallery initialization');
             showLoading();
-            log(LOG_LEVEL.DEBUG, '⏳ Fetching Flickr API key...');
-            const apiKey = await fetchFlickrApiKey();
-            log(LOG_LEVEL.DEBUG, '🔑 API Key fetch result:', apiKey ? 'Success' : 'Failed');
-
-            if (!apiKey) {
-                document.querySelector('#flickrGallery').innerHTML =
-                    '<div class="error-info">Failed to initialize gallery: Could not fetch API key</div>';
-                hideLoading();
-                return;
-            }
-
-            // Store API key for later use
-            window.flickrApiKey = apiKey;
 
             // Load all albums that need photos, regardless of visibility
             log(LOG_LEVEL.DEBUG, '🔍 Looking for albums to load...');
@@ -707,7 +696,7 @@
                 if (wasHidden) {
                     album.classList.remove('hidden-album');
                 }
-                await loadAlbumPhotos(album, apiKey);
+                await loadAlbumPhotos(album);
                 if (wasHidden) {
                     album.classList.add('hidden-album');
                 }
