@@ -1,5 +1,5 @@
-{{ if not .Site.IsServer }}
-  {{ with .Site.GoogleAnalytics }}
+{{ if or (eq hugo.Environment "production") (not hugo.IsServer) }}
+  {{ with .Site.Params.googleAnalytics }}
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
   <script>
