@@ -9,13 +9,9 @@
         {{ range $index, $album := .Params.albums }}
 
         <div class="flickr-album{{ if and (gt $index 0) (not $album.title) }} hidden-album{{ end }}"
-            data-album-id="{{ $album.album_id | default "" }}" 
-            data-user-id="{{ $album.user_id | default "" }}" 
-            data-album-index="{{ $index }}"
-            data-needs-photos="true"
-            {{ with $album.youtube_videos }}
-            data-youtube='{{ . | jsonify }}'
-            {{ end }}>
+            data-album-id="{{ $album.album_id | default "" }}" data-user-id="{{ $album.user_id | default "" }}"
+            data-album-index="{{ $index }}" data-needs-photos="true" {{ with $album.youtube_videos }}
+            data-youtube='{{ . | jsonify }}' {{ end }}>
             {{ if $album.title }}
             <h3 class="album-title">{{ $album.title }}</h3>
             {{ end }}
@@ -169,25 +165,25 @@
         }
 
         async function fetchAlbumPhotos(albumId, userId) {
-    const apiUrl = isLocal
-        ? `http://localhost:7071/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`
-        : `/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`;
+            const apiUrl = isLocal
+                ? `http://localhost:7071/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`
+                : `/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`;
 
-    log(LOG_LEVEL.DEBUG, "📡 Fetching album photos from API:", apiUrl);
+            log(LOG_LEVEL.DEBUG, "📡 Fetching album photos from API:", apiUrl);
 
-    try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`API request failed with status ${response.status}`);
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                log(LOG_LEVEL.ERROR, "Error fetching album photos:", error);
+                return null;
+            }
         }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        log(LOG_LEVEL.ERROR, "Error fetching album photos:", error);
-        return null;
-    }
-}
 
         function createVideoContainer(photo, index, userId) {
             const container = document.createElement('a');
@@ -308,7 +304,7 @@
                         const container = createYoutubeContainer(video, index);
                         photosContainer.insertBefore(container, photosContainer.querySelector('.scroll-sentinel'));
                     });
-                    
+
                     // Update total photos count to include YouTube videos
                     const currentTotal = parseInt(photosContainer.dataset.totalPhotos) || 0;
                     photosContainer.dataset.totalPhotos = currentTotal + youtubeVideos.length;
@@ -538,7 +534,7 @@
             // Remove any existing modal
             const existingModal = document.querySelector('.photo-modal, .video-modal');
             if (existingModal) existingModal.remove();
-            
+
             // Create modal with appropriate classes for video/photo
             const modal = document.createElement('div');
 
