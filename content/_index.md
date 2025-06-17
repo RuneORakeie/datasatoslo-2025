@@ -16,17 +16,18 @@ menu:
 <!--
 <a class="btn primary btn-lg" style="margin-top: 1em;" href="https://drive.google.com/file/d/1td_9Cr1b2JZvv0bCpOCJNDsEWgVgEp2Y/view?usp=sharing" target="_blank">Become a sponsor</a>
  -->
-
+<!--
 <a class="btn primary btn-lg" href="https://sessionize.com/data-saturday-oslo-2025/" target="_blank">
     <svg class="icon icon-cfp"><use xlink:href="#cfp"></use></svg>Submit a presentation
 </a>
-
+ -->
+<a class="btn primary btn-lg" href="https://datasatoslo25.eventbrite.com" target="_blank">
+    <svg class="icon icon-ticket"><use xlink:href="#ticket"></use></svg>Register for Saturday
+</a>
 
 {{% /jumbo %}}
 
-
-
-{{% home-info what="Participants:300+,Pre-cons:1+,Sessions:36,Parallel Tracks:6" class="primary" %}}
+{{% home-info what="Participants:300+,Pre-cons:2,Sessions:36,Parallel Tracks:6" class="primary" %}}
 ## What is Data Saturday Oslo?
 
 Data Saturday Oslo is a training event for professionals who use data platform capabilities either on-premises or in one or more of the 3 major public clouds Amazon Web Services, Microsoft Azure or Google Cloud Platform.  
@@ -37,8 +38,6 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
   <img src="/images/logos/gcp_logo_cloud.png" height="60" alt="Google Cloud Platform logo" style="margin-left: 15px; margin-right: 15px;">
 </p>
 {{% /home-info %}}
-
-
 
 
 <!-- ... 
@@ -76,37 +75,29 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 {{% home-tickets %}}
 # Tickets
 
-<a class="btn primary" href="https://www.billetweb.fr/devfest-toulouse-2019" target="_blank"><svg class="icon icon-cfp"><use xlink:href="#ticket"></use></svg>Ticketing</a>
+<a class="btn primary" href="https://datasatoslo25.eventbrite.com" target="_blank"><svg class="icon icon-ticket"><use xlink:href="#ticket"></use></svg>Ticketing</a>
 
 <ul>
-<li>{{< ticket name="Blind Birds"
-           starts="2019-03-25"
-           ends="2019-04-25"
-           price="40 €"
-           info="50 first places"
-           soldOut="true"
-           url="https://www.billetweb.fr/devfest-toulouse-2019" >}}</li>
 <li>{{< ticket name="Early Birds"
-           starts="2019-04-25"
-           ends="2019-06-22"
-           price="60 €"
-           info="80 first places"
+           starts="2025-01-25"
+           ends="2025-08-01"
+           price="NOK 150,-"
+           info="100 first places"
            soldOut="true"
-           url="https://www.billetweb.fr/devfest-toulouse-2019" >}}</li>
+           url="https://datasatoslo25.eventbrite.com" >}}</li>
 <li>{{< ticket name="Normal"
-           starts="2019-06-22"
-           ends="2019-10-03"
-           price="80 €"
-           info="300 last places"
-           soldOut="true"
-           url="https://www.billetweb.fr/devfest-toulouse-2019" >}}</li>
+           starts="2025-01-25"
+           ends="2025-08-30"
+           price="NOK 250,-"
+           info=""
+           soldOut="false"
+           url="https://datasatoslo25.eventbrite.com" >}}</li>
 </ul>
 
 \* Your ticket gives you access to all conferences, coffee breaks, and lunch. Accommodation is NOT included in this price.
 
 {{% /home-tickets %}}
 -->
-
 <!-- ... -->
 
 {{% home-location
@@ -136,9 +127,9 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 {{% /album  %}}
 --> 
 
-<!-- ... 
+ 
 
-{{% partners categories="platinium,gold,startup,soutien,communautes" %}}
-## Partners
+{{% partners categories="platinium,gold,silver" %}}
+## Sponsors
 {{% /partners %}}
---> 
+ 
