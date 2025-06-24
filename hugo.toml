@@ -1,3 +1,5 @@
 baseURL = '/'
 languageCode = 'en-us'
 title = 'Data Saturday Oslo 2025'
+[server]
+  noHTTPCache = true

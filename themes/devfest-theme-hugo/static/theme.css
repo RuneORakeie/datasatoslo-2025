@@ -942,7 +942,7 @@ a.social:hover {
 }
 
 .tickets ul li .ticket .ticket-name {
-    font-size: 1rem
+    font-size: 1.5rem
 }
 
 .tickets ul li .ticket .ticket-price {
@@ -953,7 +953,7 @@ a.social:hover {
 
 .tickets ul li .ticket .ticket-date,
 .tickets ul li .ticket .ticket-info {
-    color: var(--darken-3);
+    color: var(--secondary);
     font-size: .75rem
 }
 
