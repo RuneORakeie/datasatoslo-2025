@@ -18,47 +18,28 @@
 	<meta http-equiv="pragma" content="no-cache">
 
 <!-- Cache prevention script -->
+<!-- Add this to your head.html instead of the aggressive script -->
 <script>
-// Ensure DOM is ready before running cache checks
+// Simple, safe cache busting that won't cause infinite loops
 (function() {
-    // Force page refresh if loaded from cache
-    window.addEventListener('pageshow', function(event) {
-        // If page was loaded from cache (back/forward navigation)
-        if (event.persisted) {
-            console.log('Page loaded from cache, forcing reload');
-            window.location.reload(true);
-        }
-    });
-
-    // Prevent browser from caching this page in memory
-    window.addEventListener('beforeunload', function() {
-        window.onbeforeunload = null;
-    });
-
-    // Clear any service worker caches
-    if ('caches' in window) {
-        caches.keys().then(function(names) {
-            for (let name of names) {
-                caches.delete(name);
-            }
-        });
+    // Only run this check once per session
+    if (sessionStorage.getItem('cacheBustChecked')) {
+        return;
     }
-
-    // DOM-based cache check
-    document.addEventListener('DOMContentLoaded', function() {
-        // Force reload if this is a cached version (check last modified)
-        if (document.lastModified) {
-            var lastMod = new Date(document.lastModified);
-            var now = new Date();
-            var timeDiff = now.getTime() - lastMod.getTime();
-            
-            // If page is older than 5 minutes, force reload
-            if (timeDiff > 300000) {
-                console.log('Page is stale, forcing reload');
-                window.location.reload(true);
-            }
-        }
-    });
+    
+    // Mark that we've checked
+    sessionStorage.setItem('cacheBustChecked', 'true');
+    
+    // Check if we're on a versioned URL
+    var hasVersion = window.location.search.includes('v=');
+    
+    // If no version parameter, add one (only once per session)
+    if (!hasVersion && !sessionStorage.getItem('versionAdded')) {
+        sessionStorage.setItem('versionAdded', 'true');
+        var newUrl = window.location.pathname + '?v=' + Date.now() + window.location.hash;
+        window.history.replaceState({}, '', newUrl);
+        window.location.reload();
+    }
 })();
 </script>
 
