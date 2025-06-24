@@ -20,11 +20,11 @@ menu:
 <a class="btn primary btn-lg" href="https://sessionize.com/data-saturday-oslo-2025/" target="_blank">
     <svg class="icon icon-cfp"><use xlink:href="#cfp"></use></svg>Submit a presentation
 </a>
- -->
+ 
 <a class="btn primary btn-lg" href="https://datasatoslo25.eventbrite.com" target="_blank">
     <svg class="icon icon-ticket"><use xlink:href="#ticket"></use></svg>Register for Saturday
 </a>
-
+-->
 {{% /jumbo %}}
 
 {{% home-info what="Participants:300+,Pre-cons:2,Sessions:36,Parallel Tracks:6" class="primary" %}}
@@ -71,33 +71,51 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 -->
 <!-- ... -->
 
-<!--
 {{% home-tickets %}}
 # Tickets
 
 <a class="btn primary" href="https://datasatoslo25.eventbrite.com" target="_blank"><svg class="icon icon-ticket"><use xlink:href="#ticket"></use></svg>Ticketing</a>
 
 <ul>
-<li>{{< ticket name="Early Birds"
+<li>{{% ticket name="Super Early Birds"
            starts="2025-01-25"
            ends="2025-08-01"
-           price="NOK 150,-"
-           info="100 first places"
-           soldOut="true"
-           url="https://datasatoslo25.eventbrite.com" >}}</li>
-<li>{{< ticket name="Normal"
+           price=50
+           currency="Kr."
+           info="50 first sold tickets"
+           soldOut=false
+           url="https://datasatoslo25.eventbrite.com" %}}</li>
+<li>{{% ticket name="Early Birds"
+           starts="2025-01-25"
+           ends="2025-08-01"
+           price=150
+           currency="Kr."
+           info="51-100 first sold tickets"
+           soldOut=false
+           notInSale=true
+           url="https://datasatoslo25.eventbrite.com" %}}</li>
+<li>{{% ticket name="Normal"
            starts="2025-01-25"
            ends="2025-08-30"
-           price="NOK 250,-"
-           info=""
-           soldOut="false"
-           url="https://datasatoslo25.eventbrite.com" >}}</li>
+           price=250
+           currency="Kr."
+           info="101 -> sold tickets"
+           soldOut=false
+           notInSale=true
+           url="https://datasatoslo25.eventbrite.com" %}}</li>
 </ul>
 
-\* Your ticket gives you access to all conferences, coffee breaks, and lunch. Accommodation is NOT included in this price.
+\* Your ticket gives you access to Data Saturday Oslo on the 30th August including coffee breaks, and lunch. Accommodation is NOT included in this price.
 
 {{% /home-tickets %}}
--->
+
+
+{{% partners categories="gold" %}}
+## Sponsors
+{{% /partners %}}
+ 
+
+
 <!-- ... -->
 
 {{% home-location
@@ -129,7 +147,3 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 
  
 
-{{% partners categories="platinium,gold,silver" %}}
-## Sponsors
-{{% /partners %}}
- 
