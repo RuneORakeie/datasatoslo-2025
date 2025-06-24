@@ -2,11 +2,7 @@
 	<div class="top-content">
 
 		<div class="logo">
-			{{ $logoUrl := "/" | relLangURL }}
-			{{ if eq $logoUrl "/" }}
-				{{ $logoUrl = printf "/?v=%d" now.Unix }}
-			{{ end }}
-			<a href="{{ $logoUrl }}">
+			<a href="{{"/" | relLangURL}}">
 			<img src="{{ .Site.Params.logos.header }}" alt="logo {{ .Site.Title }}">
 			</a>
 		</div>
@@ -29,20 +25,12 @@
 					{{ .Name }}
 				</a>
 				{{ else if (isset .Params "icon") }}
-				{{ $url := .URL }}
-				{{ if eq .URL "/" }}
-					{{ $url = printf "/?v=%d" now.Unix }}
-				{{ end }}
-				<a href="{{ $url }}" class="link-icon" title="{{ .Name }}" aria-label="{{ .Name }}">
+				<a href="{{ .URL }}" class="link-icon" title="{{ .Name }}" aria-label="{{ .Name }}">
 					<span class="visually-hidden">{{ .Name }}</span>
 					{{ partial "icon.html" .Params.icon }}
 				</a>
 				{{ else }}
-				{{ $url := .URL }}
-				{{ if eq .URL "/" }}
-					{{ $url = printf "/?v=%d" now.Unix }}
-				{{ end }}
-				<a href="{{ $url }}">{{ .Name }}</a>
+				<a href="{{ .URL }}">{{ .Name }}</a>
 				{{ end }}
 				</li>
 				{{ end }}

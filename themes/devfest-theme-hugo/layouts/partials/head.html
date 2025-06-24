@@ -17,6 +17,51 @@
 	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT">
 	<meta http-equiv="pragma" content="no-cache">
 
+<!-- Cache prevention script -->
+<script>
+// Ensure DOM is ready before running cache checks
+(function() {
+    // Force page refresh if loaded from cache
+    window.addEventListener('pageshow', function(event) {
+        // If page was loaded from cache (back/forward navigation)
+        if (event.persisted) {
+            console.log('Page loaded from cache, forcing reload');
+            window.location.reload(true);
+        }
+    });
+
+    // Prevent browser from caching this page in memory
+    window.addEventListener('beforeunload', function() {
+        window.onbeforeunload = null;
+    });
+
+    // Clear any service worker caches
+    if ('caches' in window) {
+        caches.keys().then(function(names) {
+            for (let name of names) {
+                caches.delete(name);
+            }
+        });
+    }
+
+    // DOM-based cache check
+    document.addEventListener('DOMContentLoaded', function() {
+        // Force reload if this is a cached version (check last modified)
+        if (document.lastModified) {
+            var lastMod = new Date(document.lastModified);
+            var now = new Date();
+            var timeDiff = now.getTime() - lastMod.getTime();
+            
+            // If page is older than 5 minutes, force reload
+            if (timeDiff > 300000) {
+                console.log('Page is stale, forcing reload');
+                window.location.reload(true);
+            }
+        }
+    });
+})();
+</script>
+
 	{{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") }}
 	{{/* NOTE: These Hugo Internal Templates can be found starting at
 	https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
