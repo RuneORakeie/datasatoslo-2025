@@ -70,9 +70,9 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 {{% /home-subscribe %}}
 -->
 <!-- ... -->
-
 {{% home-tickets %}}
-# Tickets
+### {#tickets}
+## Tickets
 
 <a class="btn primary" href="https://datasatoslo25.eventbrite.com" target="_blank"><svg class="icon icon-ticket"><use xlink:href="#ticket"></use></svg>Ticketing</a>
 
@@ -111,6 +111,7 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 
 
 {{% partners categories="gold" %}}
+### {#sponsors}
 ## Sponsors
 {{% /partners %}}
  
