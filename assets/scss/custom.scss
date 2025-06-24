@@ -977,36 +977,40 @@ iframe {
 }
 
 // Partner detail page logo standardization - Override existing theme styles
-.page.partners .header .card {
-  // Keep existing layout properties but improve background handling
-  align-items: center;
-  background-color: #f8f8ff;
-  box-shadow: 0.125em 0.125em 0.25em rgba(0,0,0,0.5);
-  display: flex;
-  grid-area: logo;
-  height: 8em;
-  justify-content: center;
-  margin-right: 1em;
-  padding: 1em; // Increased padding to match grid spacing
-  width: 12em;
+.page.partners section.content {
+  margin: 2rem var(--container-margin);
+  max-width: none !important;
   
-  // Improve background image handling with padding consideration
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-origin: content-box !important; // Respects padding
-  border-radius: 8px; // Add subtle rounding
-  
-  // Ensure child elements (if any) still work
-  > * {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    object-position: center;
+  @media (max-width: 1600px) {
+        padding: 0;
+  }
+
+  @media (max-width: 768px) {
+    margin: 1rem !important;
   }
 }
 
-// Responsive improvements for mobile
+// Logo box fixes (keeping your existing logo CSS)
+.page.partners .header .card {
+  align-items: center;
+  background-color: #f8f8ff;
+  box-shadow: var(--box-shadow-1);
+  display: flex;
+  grid-area: logo;
+  height: 140px !important;
+  justify-content: center;
+  margin-right: 1em;
+  padding: 1.5rem !important;
+  width: 280px !important;
+  border-radius: 8px;
+  
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-origin: content-box !important;
+}
+
+// Responsive improvements - maintain consistent sizing with home page
 @media (max-width: 768px) {
   .page.partners .header {
     // Stack vertically on mobile
@@ -1015,15 +1019,17 @@ iframe {
       "title" 
       "website";
     grid-template-columns: 1fr;
-    text-align: center;
+    //text-align: center;
     gap: 1rem;
+    
   }
   
   .page.partners .header .card {
     margin: 0 auto; // Center the logo
     margin-bottom: 1rem;
-    width: 10em; // Slightly smaller on mobile
-    height: 6em;
+    width: 220px !important; // Match home page mobile grid (minmax 180px)
+    height: 120px !important; // Match home page mobile grid
+    padding: 1rem !important; // Match home page mobile grid
   }
   
   .page.partners .header h1 {
@@ -1038,8 +1044,9 @@ iframe {
 
 @media (max-width: 480px) {
   .page.partners .header .card {
-    width: 8em; // Even smaller on very small screens
-    height: 5em;
+    width: 180px !important; // Match home page small mobile grid
+    height: 120px !important; // Keep consistent height
+    padding: 0.75rem !important;
   }
   
   .page.partners .header h1 {

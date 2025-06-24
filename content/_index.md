@@ -9,7 +9,7 @@ menu:
 
 
 ---
-{{% jumbo img="/images/backgrounds/back-0.jpg" imgLabel="Data Saturday Oslo 2025" %}}
+{{% jumbo img="/images/backgrounds/back-0.webp" imgLabel="Data Saturday Oslo 2025" %}}
 
 ## August 29th-30th, 2025
 ### Høyskolen Kristiania, Campus Fjerdingen, Oslo

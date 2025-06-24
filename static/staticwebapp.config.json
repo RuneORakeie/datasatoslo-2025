@@ -16,7 +16,6 @@
       "route": "/",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
-        "Pragma": "no-cache",
         "Expires": "Thu, 01 Jan 1970 00:00:00 GMT"
       }
     },
@@ -24,7 +23,6 @@
       "route": "/index.html", 
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
-        "Pragma": "no-cache",
         "Expires": "Thu, 01 Jan 1970 00:00:00 GMT"
       }
     },
@@ -32,7 +30,6 @@
       "route": "/*.html",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
-        "Pragma": "no-cache",
         "Expires": "Thu, 01 Jan 1970 00:00:00 GMT"
       }
     },
