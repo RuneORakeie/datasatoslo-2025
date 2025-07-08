@@ -2,7 +2,7 @@
 title: Speaker info
 brief: Welcome to Oslo!
 image: /images/info/speaker.png
-date: 2025-01-16
+date: 2025-06-01
 draft: false
 ---
 # Registration
@@ -16,7 +16,7 @@ We do not have a slide template for you, but you can find the sponsor slide – 
 Sharing your speaking slot on social media:  
 We have created a “I am speaking”-banner for you to share on social media if you wish. You can find and download the banner on Sessionize and there should be a green button labeled “Speaker banner” in the list of your accepted session like the one below.
 
-The background image is from taken from the Opera, facing out towards the harbour and Vippetangen and Bjørvika. You can find it in the Speaker dashboard on <a href="https://sessionize.com/data-saturday-oslo-2024/dashboard" target="_blank">Sessionize</a>  
+The background image is from the lake Sognsvann in the hills above Oslo. With the strong Aurora Borealis in this picture it is most likely taken in early October in 2021. This is the lake we plan to visit on our Sunday excursion. You can find it in the Speaker dashboard on <a href="https://sessionize.com/data-saturday-oslo-2024/dashboard" target="_blank">Sessionize</a>  
 
 # Venue
 The venue is Campus Fjerdingen, Høyskolen Christiania – Chr. Kroghsgate 32 <a href="https://goo.gl/maps/mTpfZhegAyJaAZoXA" target="_blank">(Google Maps)</a>   
