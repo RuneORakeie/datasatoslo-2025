@@ -11,7 +11,7 @@ For information about travels to and from Torp/Sandefjord – <a href="https://w
  
 #### __Trains__
 The airport express train is the easiest and fastest way to get from the airport into the city center. It runs every 20 minutes – 10, 30 and 50 minutes past the hour. It costs 252 NOK per trip. You can find the schedule and information at <a href="https://flytoget.no/reiseinformasjon/praktisk-informasjon/tog-fra-gardermoen-til-oslo/" target="_blank">www.flytoget.no</a>  
-However, the regular trains costs only NOK 129 – takes almost exactly the same time into the city. They run from a different platform at 03, 13 and 43 minutes past the hour. You can find the schedule at <a href="www.vy.no" target="_blank">www.vy.no</a>
+However, the regular trains costs only NOK 129 – takes almost exactly the same time into the city. They run from a different platform at 03 and 43 minutes past the hour. You can find the schedule at <a href="www.vy.no" target="_blank">www.vy.no</a>
 
 Tickets for both trains can be purchased near the platforms.
 
