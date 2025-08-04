@@ -110,7 +110,7 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 {{% /home-tickets %}}
 
 
-{{% partners categories="gold" %}}
+{{% partners categories="platinium,gold" %}}
 ### {#sponsors}
 ## Sponsors
 {{% /partners %}}
