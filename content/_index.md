@@ -88,7 +88,7 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 <li>{{% ticket name="Early Birds"
            starts="2025-08-01"
            ends="2025-08-30"
-           price=150
+           price=100
            currency="Kr."
            info="51-100 first sold tickets"
            soldOut=false
