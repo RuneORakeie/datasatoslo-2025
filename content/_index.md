@@ -77,6 +77,7 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 <a class="btn primary" href="https://datasatoslo25.eventbrite.com" target="_blank"><svg class="icon icon-ticket"><use xlink:href="#ticket"></use></svg>Ticketing</a>
 
 <ul>
+<!-- ... 
 <li>{{% ticket name="Super Early Birds"
            starts="2025-01-25"
            ends="2025-08-01"
@@ -91,17 +92,18 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
            price=100
            currency="Kr."
            info="51-100 first sold tickets"
-           soldOut=false
+           soldOut=true
            notInSale=false
            url="https://datasatoslo25.eventbrite.com" %}}</li>
+           -->
 <li>{{% ticket name="Normal"
            starts="2025-01-25"
            ends="2025-08-30"
-           price=250
+           price=100
            currency="Kr."
-           info="101 -> sold tickets"
+           info="lunch included"
            soldOut=false
-           notInSale=true
+           notInSale=false
            url="https://datasatoslo25.eventbrite.com" %}}</li>
 </ul>
 
@@ -136,7 +138,7 @@ Data Saturday Oslo is an event run by volunteers from the #datacommunity/#sqlcom
 
 {{% album images="/images/album/2018/_25A9313.jpg,/images/album/2018/_25A9386.jpg,/images/album/2018/_25A9671.jpg,/images/album/2018/_25A9334.jpg,/images/album/2018/_25A9282.jpg,/images/album/2018/_25A9612.jpg,/images/album/2018/_25A9452.jpg,/images/album/2018/_25A9628.jpg" %}}
 
-### Some pictures of the **DevFest Toulouse 2018** with the 👾 _retro-gaming_ theme.
+
 -->
 <!-- ... 
 <a class="btn primary" target="_blank" rel="noopener" href="https://photos.app.goo.gl/nJYFVReFUk9mnXbv9">
