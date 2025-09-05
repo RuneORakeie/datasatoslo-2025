@@ -121,7 +121,14 @@
                             // Handle video thumbnails
                             const photoId = container.dataset.photoId;
                             const userId = container.dataset.userId;
-                            getVideoThumbnail(photoId, userId, flickrApiKey).then(thumbnailUrl => {
+                            // getVideoThumbnail(photoId, userId, flickrApiKey).then(thumbnailUrl => {
+                            //     if (thumbnailUrl) {
+                            //         img.src = thumbnailUrl;
+                            //     }
+                            //     img.classList.remove('unloaded');
+                            //     hideLoading();
+                            // });
+                            getVideoThumbnail(photoId, userId, FLICKR_API_KEY).then(thumbnailUrl => {
                                 if (thumbnailUrl) {
                                     img.src = thumbnailUrl;
                                 }
@@ -144,30 +151,37 @@
             threshold: 0.1
         });
 
-        async function fetchFlickrApiKey() {
-            const apiUrl = isLocal
-                ? "http://localhost:7071/api/GetFlickrKey"  // Local function
-                : "/api/GetFlickrKey";  // Azure function
+        // Your Flickr API key - replace with your actual key
+        const FLICKR_API_KEY = '831c50c7b4a4c4afa5e0db491300428d';
 
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                if (data.apiKey) {
-                    // Log API key for debugging
-                    log(LOG_LEVEL.DEBUG, '✅ Flickr API Key Retrieved:', JSON.stringify(data.apiKey));
-                    return data.apiKey.trim(); // Remove extra spaces if needed
-                }
-                throw new Error('No API key in response');
-            } catch (error) {
-                log(LOG_LEVEL.ERROR, 'Error fetching Flickr API key:', error);
-                return null;
-            }
-        }
+        // async function fetchFlickrApiKey() {
+        //     return "831c50c7b4a4c4afa5e0db491300428d";
+        //     // const apiUrl = isLocal
+        //     //     ? "http://localhost:7071/api/GetFlickrKey"  // Local function
+        //     //     : "/api/GetFlickrKey";  // Azure function
+
+        //     // try {
+        //     //     const response = await fetch(apiUrl);
+        //     //     const data = await response.json();
+        //     //     if (data.apiKey) {
+        //     //         // Log API key for debugging
+        //     //         log(LOG_LEVEL.DEBUG, '✅ Flickr API Key Retrieved:', JSON.stringify(data.apiKey));
+        //     //         return data.apiKey.trim(); // Remove extra spaces if needed
+        //     //     }
+        //     //     throw new Error('No API key in response');
+        //     // } catch (error) {
+        //     //     log(LOG_LEVEL.ERROR, 'Error fetching Flickr API key:', error);
+        //     //     return null;
+        //     // }
+        // }
 
         async function fetchAlbumPhotos(albumId, userId) {
-            const apiUrl = isLocal
-                ? `http://localhost:7071/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`
-                : `/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`;
+            // const apiUrl = isLocal
+            //     ? `http://localhost:7071/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`
+            //     : `/api/GetFlickrKey?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m`;
+
+            // Direct Flickr API call
+            const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${FLICKR_API_KEY}&photoset_id=${albumId}&user_id=${userId}&extras=media,url_q,url_m,url_b&format=json&nojsoncallback=1`;
 
             log(LOG_LEVEL.DEBUG, "📡 Fetching album photos from API:", apiUrl);
 
