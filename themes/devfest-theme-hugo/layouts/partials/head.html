@@ -90,7 +90,7 @@
 		style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://sessionize.blob.core.windows.net https://sessionize.com;
 		font-src 'self' https://fonts.gstatic.com;
 		connect-src 'self' https://api.flickr.com https://*.google-analytics.com https://www.googletagmanager.com https://sessionize.com;
-		frame-src 'self' https://*.flickr.com https://www.flickr.com https://live.staticflickr.com https://www.youtube.com https://datasaturdayoslo.ticketbutler.io https://*.sessionize.com/;
+		frame-src 'self' https://*.flickr.com https://www.flickr.com https://live.staticflickr.com https://www.youtube.com https://datasaturdayoslo.ticketbutler.io https://*.sessionize.com/ https://sessionize.com/;
 		media-src 'self' https://*.flickr.com https://*.staticflickr.com;">
 	{{ else }}
 	<meta http-equiv="Content-Security-Policy" content="
@@ -101,7 +101,7 @@
 		style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://sessionize.com; 
 		font-src 'self' https://fonts.gstatic.com;
 		connect-src 'self' https://api.flickr.com http://localhost:7071 https://*.google-analytics.com https://www.googletagmanager.com https://sessionize.com;
-		frame-src 'self' https://*.flickr.com https://www.flickr.com https://live.staticflickr.com https://www.youtube.com https://datasaturdayoslo.ticketbutler.io https://*.sessionize.com/;
+		frame-src 'self' https://*.flickr.com https://www.flickr.com https://live.staticflickr.com https://www.youtube.com https://datasaturdayoslo.ticketbutler.io https://*.sessionize.com/ https://sessionize.com/;
 		media-src 'self' https://*.flickr.com https://*.staticflickr.com;">
 	{{ end }}
 
